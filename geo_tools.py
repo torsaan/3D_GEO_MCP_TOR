@@ -2,15 +2,11 @@ from app import mcp
 import numpy as np
 import alphashape
 from shapely.geometry import Polygon, LineString
-from scipy.interpolate import griddata,splprep, splev
-import matplotlib.pyplot as plt
-from app import mcp
-import numpy as np
-import alphashape
-from shapely.geometry import Polygon, LineString
-from scipy.interpolate import griddata, splprep, splev # <-- Add splprep, splev
+from scipy.interpolate import griddata, splprep, splev
 import matplotlib.pyplot as plt
 import math
+from typing import Optional
+from scipy.spatial import KDTree
 
 
 
@@ -70,20 +66,23 @@ def _regularize_building(polygon: Polygon, angle_tolerance_deg: float = 10.0) ->
 # --- End Helper ---
 
 @mcp.tool
-def extract_building_footprint(building_points: np.ndarray, alpha: float = None) -> (Polygon | None):
+def extract_building_footprint(building_points: list[list[float]], alpha: Optional[float] = None) -> Optional[dict]:
     """
     Extracts a 2D building footprint polygon from a cluster of building points
     using alpha shapes.
     
-    :param building_points: NumPy array of [X, Y, Z] points for one building.
+    :param building_points: List of [X, Y, Z] points for one building (nested list of floats).
     :param alpha: The alpha value. If None, alphashape will auto-optimize.
-    :return: A Shapely Polygon object, or None if invalid.
+    :return: A GeoJSON-like dict representing the polygon, or None if invalid.
     """
-    if len(building_points) < 3:
+    # Convert list to NumPy array
+    building_points_array = np.array(building_points)
+    
+    if len(building_points_array) < 3:
         return None
         
     # Project to 2D
-    xy_points = building_points[:, :2]
+    xy_points = building_points_array[:, :2]
     
     # Compute alpha shape
     polygon = alphashape.alphashape(xy_points, alpha)
@@ -93,18 +92,24 @@ def extract_building_footprint(building_points: np.ndarray, alpha: float = None)
         
     # TODO: Add logic from _regularize_building here
     
-    return polygon
+    # Return GeoJSON-like dict
+    return {
+        "type": "Polygon",
+        "coordinates": [list(polygon.exterior.coords)]
+    }
 
 @mcp.tool
-def generate_contours(ground_points: np.ndarray, interval: float = 1.0) -> list[LineString]:
+def generate_contours(ground_points: list[list[float]], interval: float = 1.0) -> list[dict]:
     """
     Generates contour lines (Høydekurve) from ground points.
     
-    :param ground_points: NumPy array of [X, Y, Z] ground points.
+    :param ground_points: List of [X, Y, Z] ground points (nested list of floats).
     :param interval: The contour interval in meters.
-    :return: A list of Shapely LineString objects.
+    :return: A list of GeoJSON-like LineString dicts.
     """
-    x, y, z = ground_points[:, 0], ground_points[:, 1], ground_points[:, 2]
+    # Convert list to NumPy array
+    ground_points_array = np.array(ground_points)
+    x, y, z = ground_points_array[:, 0], ground_points_array[:, 1], ground_points_array[:, 2]
     
     # Create a grid to interpolate onto
     grid_x = np.linspace(x.min(), x.max(), 500)
@@ -118,87 +123,73 @@ def generate_contours(ground_points: np.ndarray, interval: float = 1.0) -> list[
     contours = plt.contour(grid_x, grid_y, grid_z, 
                            levels=np.arange(z.min(), z.max(), interval))
     
-    # Convert contour paths to LineStrings
+    # Convert contour paths to GeoJSON-like dicts
     lines = []
     for collection in contours.collections:
         for path in collection.get_paths():
             if len(path.vertices) > 1:
-                lines.append(LineString(path.vertices))
+                lines.append({
+                    "type": "LineString",
+                    "coordinates": path.vertices.tolist()
+                })
                 
     plt.close() # Close the plot to save memory
     return lines
 
 
 @mcp.tool
-def smooth_line_bspline(points: np.ndarray, smoothing: float = 0.5) -> np.ndarray:
-    """Smooths a 2D/3D line using a B-spline."""
-    tck, u = splprep([points[:, 0], points[:, 1], points[:, 2]], s=smoothing, k=3)
-    u_new = np.linspace(u.min(), u.max(), len(points))
+def smooth_line_bspline(points: list[list[float]], smoothing: float = 0.5) -> list[list[float]]:
+    """Smooths a 2D/3D line using a B-spline.
+    
+    :param points: List of [X, Y, Z] points (nested list of floats).
+    :param smoothing: The smoothing factor.
+    :return: List of smoothed [X, Y, Z] points.
+    """
+    points_array = np.array(points)
+    tck, u = splprep([points_array[:, 0], points_array[:, 1], points_array[:, 2]], s=smoothing, k=3)
+    u_new = np.linspace(u.min(), u.max(), len(points_array))
     x_new, y_new, z_new = splev(u_new, tck)
-    return np.vstack([x_new, y_new, z_new]).T
+    return np.vstack([x_new, y_new, z_new]).T.tolist()
 
 @mcp.tool
-def simplify_line_douglas_peucker(line_points: np.ndarray, tolerance: float) -> np.ndarray:
+def simplify_line_douglas_peucker(line_points: list[list[float]], tolerance: float) -> list[list[float]]:
     """
     Simplifies a 3D line using the Douglas-Peucker algorithm.
     This reduces the number of vertices while preserving the shape.
 
-    :param line_points: NumPy array of ORDERED [X, Y, Z] points.
+    :param line_points: List of ORDERED [X, Y, Z] points (nested list of floats).
     :param tolerance: The simplification distance in meters.
-    :return: A new, simplified NumPy array of [X, Y, Z] points.
+    :return: A new, simplified list of [X, Y, Z] points.
     """
-    if len(line_points) < 2:
+    # Convert to NumPy array
+    line_points_array = np.array(line_points)
+    
+    if len(line_points_array) < 2:
         return line_points
         
-    line = LineString(line_points)
+    line = LineString(line_points_array)
     # preserve_topology=True is important!
     simplified_line = line.simplify(tolerance, preserve_topology=True)
     
-    return np.array(simplified_line.coords)
+    return np.array(simplified_line.coords).tolist()
 
 
 @mcp.tool
-def smooth_line_bspline(line_points: np.ndarray, num_points: int, smoothing: float = 0.5) -> np.ndarray:
-    """
-    Smooths a jagged 3D line into a B-spline curve.
-    This is excellent for creating clean, aesthetic contour lines. [cite: 3]
-
-    :param line_points: NumPy array of ORDERED [X, Y, Z] points.
-    :param num_points: How many points the final smooth line should have.
-    :param smoothing: The smoothing factor. 0 = interpolates (passes through all points), > 0 = smoother.
-    :return: A new, smooth NumPy array of [X, Y, Z] points.
-    """
-    if len(line_points) < 4: # splprep needs at least k+1 points (k=3 default)
-        return line_points
-        
-    # Unpack the 3D points
-    x, y, z = line_points.T
-    
-    # Find the B-spline representation
-    tck, u = splprep([x, y, z], s=smoothing, k=3)
-    
-    # Evaluate the spline at 'num_points' new, evenly-spaced points
-    u_new = np.linspace(u.min(), u.max(), num_points)
-    x_new, y_new, z_new = splev(u_new, tck)
-    
-    # Re-pack into an [N, 3] array
-    return np.column_stack([x_new, y_new, z_new])
-
-@mcp.tool
-def ransac_plane_detection(points: np.ndarray, threshold: float = 0.01, iterations: int = 1000) -> tuple[np.ndarray, np.ndarray]:
+def ransac_plane_detection(points: list[list[float]], threshold: float = 0.01, iterations: int = 1000) -> dict:
     """
     Detects plane in 3D points using RANSAC.
     
-    :param points: [N, 3] NumPy array.
+    :param points: List of [X, Y, Z] points (nested list of floats).
     :param threshold: Inlier distance threshold.
     :param iterations: Max RANSAC iterations.
-    :return: (inliers, outliers)
+    :return: Dict with 'inliers' and 'outliers' as lists of points.
     """
+    points_array = np.array(points)
     best_inliers = []
     for _ in range(iterations):
         # Sample 3 points
-        sample_idx = np.random.choice(len(points), 3, replace=False)
-        sample = points[sample_idx]
+        sample_idx = np.random.choice(len(points_array), 3, replace=False)
+        sample = points_array[sample_idx]
         
         # Compute plane: ax + by + cz = d
         v1 = sample[1] - sample[0]
@@ -208,32 +199,40 @@ def ransac_plane_detection(points: np.ndarray, threshold: float = 0.01, iteratio
         d = -normal.dot(sample[0])
         
         # Inliers
-        dist = np.abs(points.dot(normal) + d) / np.linalg.norm(normal)
+        dist = np.abs(points_array.dot(normal) + d) / np.linalg.norm(normal)
         inliers = np.where(dist <= threshold)[0]
         
         if len(inliers) > len(best_inliers):
             best_inliers = inliers
     
-    return points[best_inliers], points[np.setdiff1d(np.arange(len(points)), best_inliers)]
+    outliers_idx = np.setdiff1d(np.arange(len(points_array)), best_inliers)
+    
+    return {
+        "inliers": points_array[best_inliers].tolist(),
+        "outliers": points_array[outliers_idx].tolist()
+    }
 
 
 # --- NEW TOOL: Detect Linear Feature Points ---
 @mcp.tool
-def detect_linear_points(points: np.ndarray, classification: np.ndarray, target_class: int, neighbor_radius: float = 0.5, min_linearity: float = 0.7) -> np.ndarray:
+def detect_linear_points(points: list[list[float]], classification: list[int], target_class: int, neighbor_radius: float = 0.5, min_linearity: float = 0.7) -> list[list[float]]:
     """
     Detects points belonging to linear features (like curbs, road edges)
     based on local neighborhood analysis (e.g., linearity). Requires classified points.
 
-    :param points: [N, 3] NumPy array of points.
-    :param classification: [N] NumPy array of class labels for each point.
+    :param points: List of [X, Y, Z] points (nested list of floats).
+    :param classification: List of class labels for each point (list of ints).
     :param target_class: The integer class label for the linear feature (e.g., 6 for curb).
     :param neighbor_radius: Radius to search for neighbors.
     :param min_linearity: Minimum PCA linearity score (0=plane, 1=perfect line) to keep a point.
-    :return: NumPy array of points belonging to the linear feature.
+    :return: List of points belonging to the linear feature.
     """
-    feature_points = points[classification == target_class]
+    points_array = np.array(points)
+    classification_array = np.array(classification)
+    
+    feature_points = points_array[classification_array == target_class]
     if len(feature_points) == 0:
-        return np.array([])
+        return []
 
     tree = KDTree(feature_points[:, :2]) # Use 2D for neighborhood search
     indices_list = tree.query_ball_point(feature_points[:, :2], r=neighbor_radius)
@@ -264,4 +263,4 @@ def detect_linear_points(points: np.ndarray, classification: np.ndarray, target_
                 linear_mask[i] = True
 
     print(f"Detected {np.sum(linear_mask)} linear points for class {target_class}")
-    return feature_points[linear_mask]
+    return feature_points[linear_mask].tolist()

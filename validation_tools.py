@@ -1,31 +1,36 @@
 from app import mcp
-from shapely.geometry import base , LineString
+from shapely.geometry import shape, LineString, Point
 import numpy as np
+from typing import Any
 
 @mcp.tool
-def calculate_quality_metrics(extracted_geom: base.BaseGeometry, 
-                              reference_geom: base.BaseGeometry) -> dict:
+def calculate_quality_metrics(extracted_geom: dict, 
+                              reference_geom: dict) -> dict:
     """
     Computes Completeness, Correctness, and Quality for a
     single extracted geometry against a reference geometry.
     
-    :param extracted_geom: The Shapely geometry you extracted.
-    :param reference_geom: The "ground truth" Shapely geometry.
+    :param extracted_geom: GeoJSON-like dict of the geometry you extracted.
+    :param reference_geom: GeoJSON-like dict of the "ground truth" geometry.
     :return: A dictionary with completeness, correctness, and quality scores.
     """
-    if not extracted_geom.is_valid:
+    # Convert GeoJSON dicts to Shapely objects
+    extracted = shape(extracted_geom)
+    reference = shape(reference_geom)
+    
+    if not extracted.is_valid:
         return {"error": "Extracted geometry is invalid."}
-    if not reference_geom.is_valid:
+    if not reference.is_valid:
         return {"error": "Reference geometry is invalid."}
 
     # True Positives: extracted ∩ reference
-    tp = extracted_geom.intersection(reference_geom).area
+    tp = extracted.intersection(reference).area
     
     # False Positives: extracted - reference
-    fp = extracted_geom.difference(reference_geom).area
+    fp = extracted.difference(reference).area
     
     # False Negatives: reference - extracted
-    fn = reference_geom.difference(extracted_geom).area
+    fn = reference.difference(extracted).area
     
     completeness = tp / (tp + fn) if (tp + fn) > 0 else 0
     correctness = tp / (tp + fp) if (tp + fp) > 0 else 0
@@ -37,11 +42,11 @@ def calculate_quality_metrics(extracted_geom: base.BaseGeometry,
         'quality': round(quality, 4)
     }
 @mcp.tool
-def validate_fkb_object(geometry: base.BaseGeometry, metadata: dict) -> dict:
+def validate_fkb_object(geometry: dict, metadata: dict) -> dict:
     """
     Validates an FKB object against rules: metadata presence and pilhøyde (curve precision).
 
-    :param geometry: Shapely geometry.
+    :param geometry: GeoJSON-like dict of the geometry.
     :param metadata: Dict with FKB keys like 'DATAFANGSTDATO', 'KVALITET', etc.
     :return: Dict with validation results.
     """
@@ -53,10 +58,13 @@ def validate_fkb_object(geometry: base.BaseGeometry, metadata: dict) -> dict:
         if key not in metadata:
             results['valid'] = False
             results['errors'].append(f"Missing metadata: {key}")
+    
+    # Convert GeoJSON dict to Shapely object
+    geom = shape(geometry)
             
     # Pilhøyde check for lines
-    if isinstance(geometry, LineString):
-        coords = np.array(geometry.coords)
+    if isinstance(geom, LineString):
+        coords = np.array(geom.coords)
         if len(coords) > 2: # Need at least 3 points to check deviation
             # Get tolerance from metadata if available, else default
             try:

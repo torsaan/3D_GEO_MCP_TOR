@@ -7,28 +7,38 @@ try:
     import cupy as cp
     GPU_ENABLED = True
     print("✅ GPU (cuML, cuPy) found. Clustering will be accelerated.")
-except ImportError:
-    # If GPU fails, import the CPU versions
-    from hdbscan import HDBSCAN as CPU_HDBSCAN
-    from sklearn.cluster import DBSCAN as CPU_DBSCAN
+except (ImportError, RuntimeError) as e:
+    # If GPU fails (missing module or CUDA runtime), import the CPU versions
     GPU_ENABLED = False
-    print("⚠️ GPU (cuML) not found. Falling back to CPU (HDBSCAN/DBSCAN).")
+    print(f"⚠️ GPU (cuML) not available: {e}. Falling back to CPU (HDBSCAN/DBSCAN).")
+
+# Import CPU versions if GPU is not available
+if not GPU_ENABLED:
+    try:
+        from hdbscan import HDBSCAN as CPU_HDBSCAN
+        from sklearn.cluster import DBSCAN as CPU_DBSCAN
+    except ImportError:
+        print("❌ ERROR: Neither GPU (cuML) nor CPU (HDBSCAN/DBSCAN) libraries found!")
+        print("   Please install: pip install hdbscan scikit-learn")
 # ---
 
 @mcp.tool
-def cluster_points(points: np.ndarray, method: str, eps: float = 0.5, min_cluster_size: int = 50) -> np.ndarray:
+def cluster_points(points: list[list[float]], method: str, eps: float = 0.5, min_cluster_size: int = 50) -> list[int]:
     """
     Performs density-based clustering on [X, Y] points.
     AUTOMATICALLY uses GPU (cuML) if available, otherwise falls back to CPU. 
     
-    :param points: [N, 3] or [N, 2] NumPy array of points.
+    :param points: List of [X, Y, Z] or [X, Y] points (nested list of floats).
     :param method: The algorithm to use. 'hdbscan' or 'dbscan'.
     :param eps: (DBSCAN only) The max distance between points.
     :param min_cluster_size: (HDBSCAN/DBSCAN) Min points to form a cluster.
-    :return: NumPy array of cluster labels. -1 is noise.
+    :return: List of cluster labels. -1 is noise.
     """
+    # Convert to NumPy array
+    points_array = np.array(points)
+    
     # We only cluster on 2D (XY) for FKB objects
-    points_2d = points[:, :2]
+    points_2d = points_array[:, :2]
 
     if GPU_ENABLED:
         print(f"Clustering {len(points_2d)} points on GPU...")
@@ -43,8 +53,8 @@ def cluster_points(points: np.ndarray, method: str, eps: float = 0.5, min_cluste
         # Run on GPU
         labels_gpu = clusterer.fit_predict(points_gpu)
         
-        # Return data to CPU memory
-        return cp.asnumpy(labels_gpu)
+        # Return data to CPU memory as list
+        return cp.asnumpy(labels_gpu).tolist()
         
     else:
         print(f"Clustering {len(points_2d)} points on CPU...")
@@ -55,29 +65,32 @@ def cluster_points(points: np.ndarray, method: str, eps: float = 0.5, min_cluste
             
         # Run on CPU
         labels_cpu = clusterer.fit_predict(points_2d)
-        return labels_cpu
+        return labels_cpu.tolist()
     
 @mcp.tool
-def ground_segmentation_ransac(points: np.ndarray, distance_threshold: float = 0.1, num_iterations: int = 1000) -> tuple[np.ndarray, np.ndarray]:
+def ground_segmentation_ransac(points: list[list[float]], distance_threshold: float = 0.1, num_iterations: int = 1000) -> dict:
     """
     Separates ground vs non-ground using RANSAC plane fitting.
     Assumes the largest plane found is the ground.
 
-    :param points: [N, 3] NumPy array.
+    :param points: List of [X, Y, Z] points (nested list of floats).
     :param distance_threshold: Max distance a point can be from the plane to be an inlier.
     :param num_iterations: Number of RANSAC iterations.
-    :return: Tuple: (ground_points, non_ground_points)
+    :return: Dict with 'ground' and 'non_ground' point lists.
     """
-    if len(points) < 3:
-        return np.array([]), points # Not enough points
+    # Convert to NumPy array
+    points_array = np.array(points)
+    
+    if len(points_array) < 3:
+        return {"ground": [], "non_ground": points} # Not enough points
 
     best_inliers_idx = []
     
     # RANSAC implementation (simplified from geo_tools version)
     for _ in range(num_iterations):
         # Sample 3 points
-        sample_idx = np.random.choice(len(points), 3, replace=False)
-        sample = points[sample_idx]
+        sample_idx = np.random.choice(len(points_array), 3, replace=False)
+        sample = points_array[sample_idx]
 
         # Compute plane normal
         v1 = sample[1] - sample[0]
@@ -91,7 +104,7 @@ def ground_segmentation_ransac(points: np.ndarray, distance_threshold: float = 0
         d = -normal.dot(sample[0])
 
         # Calculate distances of all points to the plane
-        distances = np.abs(points.dot(normal) + d)
+        distances = np.abs(points_array.dot(normal) + d)
 
         # Find inliers within the threshold
         inliers_idx = np.where(distances <= distance_threshold)[0]
@@ -102,11 +115,14 @@ def ground_segmentation_ransac(points: np.ndarray, distance_threshold: float = 0
 
     if len(best_inliers_idx) == 0:
         print("Warning: RANSAC failed to find a ground plane.")
-        return np.array([]), points # Return all as non-ground
+        return {"ground": [], "non_ground": points} # Return all as non-ground
 
     # Create mask
-    ground_mask = np.zeros(len(points), dtype=bool)
+    ground_mask = np.zeros(len(points_array), dtype=bool)
     ground_mask[best_inliers_idx] = True
 
     print(f"Ground segmentation complete. Ground points: {len(best_inliers_idx)}")
-    return points[ground_mask], points[~ground_mask]
+    return {
+        "ground": points_array[ground_mask].tolist(),
+        "non_ground": points_array[~ground_mask].tolist()
+    }

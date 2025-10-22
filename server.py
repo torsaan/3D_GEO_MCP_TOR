@@ -1,7 +1,6 @@
 # 1. Import the app. This creates the 'mcp' object.
 from app import mcp
-from fastmcp import transport
-
+from fastmcp import FastMCP
 # 2. Import all your tool and resource files.
 #    This is CRITICAL: just importing them registers all
 #    the @mcp.tool decorators with the 'mcp' object.
@@ -22,8 +21,6 @@ except ImportError as e:
 
 # 3. Run the server
 if __name__ == "__main__":
-    print(f"🚀 GEO-MCP Server starting with {len(mcp.tools)} tools...")
+    print(f"🚀 GEO-MCP Server starting...")
     print("   Listening on: http://localhost:6278")
-    
-    # Run in HTTP mode so other projects can connect
-    mcp.run(transport=transport.SSE(port=6278))
+    mcp.run(transport="http", host="127.0.0.1", port=6278)
