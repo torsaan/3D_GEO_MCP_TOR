@@ -1,0 +1,40 @@
+name: geo-mcp-env
+channels:
+  - conda-forge # Ensure conda-forge is listed for packages like hdbscan
+dependencies:
+  # === Core Conda Packages ===
+  - python=3.10
+  - pip
+  
+  # --- Point Cloud & GIS ---
+  - gdal           
+  - geopandas
+  - laspy
+  - open3d
+  - pdal
+  - python-pdal
+  - shapely
+  - scipy          # <--- ADDED (for splines, KDTree)
+  
+  # --- Data & Graphs ---
+  - networkx
+  - numpy
+  - scikit-learn
+  - hdbscan        # <--- ADDED (for CPU clustering)
+  - numba          
+  - pyyaml         # <--- ADDED (for reading config.yaml)
+  
+  # === Core Pip Packages ===
+  - pip:
+    # --- MCP Server ---
+    - "mcp[cli]"
+    - fastmcp
+    
+    # --- Geometry & ML ---
+    - alphashape     
+    - torch          
+    - torch-geometric 
+    
+    # --- GPU Acceleration (Optional) ---
+    - cuml-cu11      
+    - cupy-cuda11x
