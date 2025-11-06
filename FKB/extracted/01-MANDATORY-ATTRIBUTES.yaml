@@ -1,0 +1,5143 @@
+metadata:
+  analysis_date: '2025-11-04'
+  total_object_types: 164
+  specifications_analyzed: 7
+  notes: Attributes organized by source specification
+common_attributes:
+  description: Attributes from FKB-Generell del that apply to all/most objects
+  mandatory:
+  - name: OPPDATERINGSDATO
+    attribute_name: oppdateringsdato
+    type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+    multiplicity: '[1..1]'
+    description: tidspunkt for siste endring på objektet
+  - name: DATAFANGSTDATO
+    attribute_name: datafangstdato
+    type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+    multiplicity: '[1..1]'
+    description: dato når objektet siste gang ble registrert/observert/målt i terrenget
+  - name: LOKALID
+    attribute_name: kvalitet
+    type: «dataType» Posisjonskvalitet
+    multiplicity: '[1..1]'
+    description: beskrivelse av kvaliteten på stedfestingen
+  - name: LOKALID
+    attribute_name: lokalId
+    type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+    multiplicity: '[1..1]'
+    description: lokal identifikator av et objekt
+  - name: NAVNEROM
+    attribute_name: navnerom
+    type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+    multiplicity: '[1..1]'
+    description: navnerom som unikt identifiserer datakilden til et objekt, anbefales å være en http-URI
+  optional:
+  - name: SLUTTDATO
+    attribute_name: sluttdato
+    type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+    multiplicity: '[0..1]'
+    description: Tid for når denne versjonen av objektet var erstattet eller opphørt å eksistere.
+  - name: VERIFISERINGSDATO
+    attribute_name: verifiseringsdato
+    type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+    multiplicity: '[0..1]'
+    description: dato når dataene er fastslått å være i samsvar med virkeligheten.
+  - name: REGISTRERINGSVERSJON
+    attribute_name: registreringsversjon
+    type: «CodeList» Registreringsversjon
+    multiplicity: '[0..1]'
+    description: angivelse av hvilken produktspesifikasjon som er utgangspunkt for dataene
+  - name: LOKALID
+    attribute_name: informasjon
+    type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+    multiplicity: '[0..1]'
+    description: generell opplysning.
+  - name: VERSJONID
+    attribute_name: versjonId
+    type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+    multiplicity: '[0..1]'
+    description: identifikasjon av en spesiell versjon av et geografisk objekt (instans)
+  source: FKB_GENRELL_DEL_5.md
+specifications:
+- specification: FKB_BYGNING_5.1
+  file: FKB_BYGNING_5.1.md
+  object_types:
+  - object_type: Bygning
+    definition: bygning som er registrert i matrikkelen
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på. Punktet er en kopi av bygningspunktet i matrikkelen
+      codelist: null
+    - name: bygningsnummer
+      attribute_name: bygningsnummer
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: nummerering av bygninger fra Matrikkelen. Nummeret er unikt og landsdekkende.
+      codelist: null
+    - name: bygningstype
+      attribute_name: bygningstype
+      type: «CodeList» Bygningstype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: beskrivelse av hva bygningen faktisk er brukt til, eventuelt hva bygningen er godkjent til.
+      codelist: null
+    - name: bygningsstatus
+      attribute_name: bygningsstatus
+      type: «CodeList» Bygningsstatus
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: informasjon om bygningens status
+      codelist: null
+    - name: kommunenummer
+      attribute_name: kommunenummer
+      type: «CodeList» Kommunenummer
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: nummerering av kommuner i henhold til Statistisk sentralbyrå sin offisielle liste
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    attribute_count: 7
+  - object_type: AnnenBygning
+    definition: bygning som ikke er registrert i matrikkelen
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    attribute_count: 3
+  - object_type: BygningsavgrensningTiltak
+    definition: Bygningsavgrensning hentet fra FKB-Tiltak. Dataene er tatt fra plan og er ikke innmålt i terrenget.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetOpsjonell
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: lavestegulv
+      attribute_name: lavestegulv
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: høydeverdi for laveste gulvhøyde på tiltaket.
+      codelist: null
+    attribute_count: 4
+  - object_type: Bygningsdelelinje
+    definition: 'linje mellom to bygninger (bygninger registrert i Matrikkelen) som står inntil hverandre Merknad: Det kan'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: treDNivå
+      attribute_name: treDNivå
+      type: «CodeList» TreDNivå
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hvilken 3D framstillingsmulighet (angitt i 6 nivåer) bygningen kan framstilles i.
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Fasadeliv
+    definition: bygningens ytre avgrensing i fasaderiss
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    - name: skalAvgrenseBygning
+      attribute_name: skalAvgrenseBygning
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om fasadeliv skal benyttes til å danne bygningsflate. Defaultverdi er Nei, dvs. at
+      codelist: null
+    optional_attributes: []
+    attribute_count: 4
+  - object_type: FiktivBygningsavgrensning
+    definition: 'fiktiv avgrensing av bygning Merknad: Brukes når deler av takkant, fasadeliv, grunnmur eller'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetOpsjonell
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Grunnmur
+    definition: 'bygningens ytteravgrensning langs grunnmur Merknad: Høydereferanse angis med høydereferanse.'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: Takkant
+    definition: 'bygningens ytre takflateavgrensing Merknad: Høydereferansen er de målte punktene på taket. Merknad:'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: treDNivå
+      attribute_name: treDNivå
+      type: «CodeList» TreDNivå
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hvilken 3D framstillingsmulighet (angitt i 6 nivåer) bygningen kan framstilles i.
+      codelist: null
+    optional_attributes:
+    - name: takskjegg
+      attribute_name: takskjegg
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: avstanden fra veggliv til takkant målt i cm
+      codelist: null
+    attribute_count: 4
+  - object_type: Arkade
+    definition: avgrensing av en tunnel gjennom en bygning
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Bygningslinje
+    definition: linje som beskriver bygningsdetalj innenfor en takflate og som ikke kan beskrives av andre objekttyper
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Hjelpelinje3D
+    definition: linje for å kunne danne gode 3D modeller av bygninger
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Hjelpepunkt3D
+    definition: punkt for å kunne danne gode 3-D modeller av oppstikkende detaljer som for eksempel spir
+    geometry_type: PUNKT
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Mønelinje
+    definition: linje som beskriver den horisontale knekklinje på toppen av taket (høyeste topp)
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Portrom
+    definition: avgrensing av en tunnel gjennom en bygning
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: TakMur
+    definition: 'opphøyde kanter ved takkant Merknad: Eksempel på kanter der TakMur skal benyttes er gavlvegger og'
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Takplatå
+    definition: 'innsøkk i form av laveste vannrette flate på hovedvolum på bygningskropp Eksempel: Arker som går inn i'
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: TakplatåTopp
+    definition: 'takkant i indre rom i bygårder der det indre rommet ikke går ned til terrengoverflaten MERKNAD:'
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Taksprang
+    definition: 'topp av takkant inne på en bygningskropp Merknad: ikke ytterkant som registreres som takkant'
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: TaksprangBunn
+    definition: 'bunn av takkant inne på en bygningskropp Merknad: Ikke ytterkant som er takkant'
+    geometry_type: KURVE
+    supertype: BeskrivendeBygningslinjer::«featureType» BeskrivendeBygningsdetalj
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: BygningBru
+    definition: 'bru tilknyttet bygning som brukes som adkomst til bygninger, og bruer mellom bygninger Merknad:'
+    geometry_type: UNKNOWN
+    supertype: Bygningsvedheng::«featureType» Bygningsvedheng
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Låvebru
+    definition: 'kjørerampe til et landbruksbygg Merknad: Kjørerampe i tilknytning til et industri og lagerbygg beskrives'
+    geometry_type: UNKNOWN
+    supertype: Bygningsvedheng::«featureType» Bygningsvedheng
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: TrappBygg
+    definition: omfatter trapper som danner adkomsten til hus og trapp inntil hus
+    geometry_type: UNKNOWN
+    supertype: Bygningsvedheng::«featureType» Bygningsvedheng
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Veranda
+    definition: 'bygningsvedheng som omfatter veranda, terrasse, altan, balkong og lasterampe Merknad: Garasje med'
+    geometry_type: UNKNOWN
+    supertype: Bygningsvedheng::«featureType» Bygningsvedheng
+    mandatory_attributes:
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: VeggFrittstående
+    definition: vegg oppsatt for skjerming
+    geometry_type: UNKNOWN
+    supertype: Bygningsvedheng::«featureType» Bygningsvedheng
+    mandatory_attributes:
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Takoverbygg
+    definition: 'byggverk med ingen eller få vegger, og som ikke er registrert som bygning i matrikkelen Eksempel:'
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    attribute_count: 2
+  - object_type: TakoverbyggKant
+    definition: avgrensing av takoverbygg
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del (ytterkant)
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  object_count: 26
+- specification: FKB_BygningAnlegg
+  file: FKB_BygningAnlegg.md
+  object_types:
+  - object_type: Fellesegenskaper
+    definition: abstrakt objekttype som bærer sentrale egenskaper som er anbefalt for bruk i produktspesifikasjoner.
+    geometry_type: UNKNOWN
+    supertype: null
+    mandatory_attributes:
+    - name: identifikasjon
+      attribute_name: identifikasjon
+      type: «dataType» Identifikasjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: unik identifikasjon av et objekt
+      codelist: null
+    - name: oppdateringsdato
+      attribute_name: oppdateringsdato
+      type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: tidspunkt for siste endring på objektet
+      codelist: null
+    - name: datafangstdato
+      attribute_name: datafangstdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: dato når objektet siste gang ble registrert/observert/målt i terrenget
+      codelist: null
+    optional_attributes:
+    - name: sluttdato
+      attribute_name: sluttdato
+      type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Tid for når denne versjonen av objektet var erstattet eller opphørt å eksistere.
+      codelist: null
+    - name: verifiseringsdato
+      attribute_name: verifiseringsdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: dato når dataene er fastslått å være i samsvar med virkeligheten.
+      codelist: null
+    - name: registreringsversjon
+      attribute_name: registreringsversjon
+      type: «CodeList» Registreringsversjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angivelse av hvilken produktspesifikasjon som er utgangspunkt for dataene
+      codelist: null
+    - name: informasjon
+      attribute_name: informasjon
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: generell opplysning.
+      codelist: null
+    attribute_count: 7
+  - object_type: KvalitetPåkrevd
+    definition: abstrakt objekttype med påkrevet kvalitetsangivelse
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: kvalitet
+      attribute_name: kvalitet
+      type: «dataType» Posisjonskvalitet
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: beskrivelse av kvaliteten på stedfestingen
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: NRLobjekter
+    definition: abstrakt objekttype som arves fra for objekter som har kobling til NRL
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes: []
+    optional_attributes:
+    - name: nrlpeker
+      attribute_name: nrlpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til objekt i NRL
+      codelist: null
+    attribute_count: 1
+  - object_type: NVDBobjekter
+    definition: abstrakt objekttype som arves fra for objekter som har kobling til NVDB
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes: []
+    optional_attributes:
+    - name: nvdbpeker
+      attribute_name: nvdbpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til objekt i NVDB
+      codelist: null
+    attribute_count: 1
+  - object_type: Bru
+    definition: 'konstruksjon for kryssing av vanskelig farbart område Merknad: Med vanskelig farbart område menes en'
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: bruOverBru
+      attribute_name: bruOverBru
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angivelse av om brue ligger over en eller flere andre bruer
+      codelist: null
+    - name: brutrafikktype
+      attribute_name: brutrafikktype
+      type: «CodeList» Brutrafikktype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: type trafikk bruen brukes til
+      codelist: null
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system (annet enn NVDB).
+      codelist: null
+    - name: friseilingshøyde
+      attribute_name: friseilingshøyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: friseilingshøyde angitt i meter. Angis kun for bruer over vann der friseilingshøyde er
+      codelist: null
+    attribute_count: 5
+  - object_type: Brudetalj
+    definition: 'markante detaljer på bru som ikke registreres gjennom andre objekttyper Eksempler: - Brutårn for'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Kulvert
+    definition: gjennomløp på tvers av veg-eller jernbane med overliggende fylling og lysåpning mellom 1m og 2,5m
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Stikkrenne
+    definition: gjennomløp på tvers av veg-eller jernbane med overliggende fylling og lysåpning mindre enn 1m
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Tunnelportal
+    definition: spesielt byggverk som sammenbinder tunnel og åpen veg
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Avfallsbeholder
+    definition: Større tank eller annen type beholder for avfall
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system, f.eks. hos ansvarlig renovasjonsselskap.
+      codelist: null
+    attribute_count: 5
+  - object_type: Brønn
+    definition: lite bygningsmessig anlegg for uttak av ferskvann
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    attribute_count: 3
+  - object_type: Flaggstang
+    definition: lang rett stang for heising av flagg
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: Fundament
+    definition: 'støpt underlag for frittstående konstruksjoner Merknad: Selve konstruksjonen oppå fundamentet og dens'
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Pipe
+    definition: frittstående rørformete innretninger for transport av avgasser
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    attribute_count: 3
+  - object_type: Tank
+    definition: lukkede kar for oppbevaring av gass eller væsker som ikke er registrert som bygning
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    attribute_count: 3
+  - object_type: Trapp
+    definition: trapp som ikke står i tilknytning til en bygning
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Tårn
+    definition: høy bygningsmessig konstruksjon hvor høyden er stor i forhold til bygningens areal i grunnplanet
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    attribute_count: 3
+  - object_type: Gjerde
+    definition: oppsatt stengsel som hindrer passering. Står ofte i grensa mellom eiendommer
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: gjerdetype
+      attribute_name: gjerdetype
+      type: «CodeList» Gjerdetype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Type gjerde
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 4
+  - object_type: MurFrittstående
+    definition: mur hvor oppfyllingen på en side utgjør mindre enn halve høyden på den andre siden
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: MurLoddrett
+    definition: forstøtningsmur hvor topp og bunn er ubetydelig forskjøvet i forhold til hverandre
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: Portstolpe
+    definition: stolpe som en port kan være hengslet til
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Ruin
+    definition: Synlig mur som er rester etter tidligere byggverk
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system, f.eks. hos parkforvalter i kommunen.
+      codelist: null
+    attribute_count: 4
+  - object_type: Skjerm
+    definition: frittstående konstruksjon laget for å skjerme mot støy eller snø, eller hindre/begrense ras og flom.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: skjermingsfunksjon
+      attribute_name: skjermingsfunksjon
+      type: «CodeList» SkjermingsFunksjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hvilken funksjon skjermen har
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: høydeOverBakken
+      attribute_name: høydeOverBakken
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: høyde over bakken (angitt i meter)
+      codelist: null
+    attribute_count: 5
+  - object_type: SkråForstøtningsmur
+    definition: forstøtningsmur hvor topp og bunn er betydelig forskjøvet i forhold til hverandre
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Voll
+    definition: opphøyd terrengformasjon anlagt for å hindre støy, ukontrollert gjennomstrømming av vann, skade fra
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: skjermingsfunksjon
+      attribute_name: skjermingsfunksjon
+      type: «CodeList» SkjermingsFunksjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hvilken funksjon vollen har
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes:
+    - name: høydeOverBakken
+      attribute_name: høydeOverBakken
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objekts høyde over bakken
+      codelist: null
+    attribute_count: 4
+  - object_type: Hoppbakke
+    definition: anlegg for skihopping med kunstig eller naturlig tilløp
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Idrettsanlegg
+    definition: linje for avgrensning av anleggsmessige deler av et idrettsanlegg, som f.eks ytteravgrensning av en
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Parkdetalj
+    definition: detalj i parkmessig område
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: parkdetaljtype
+      attribute_name: parkdetaljtype
+      type: «CodeList» Parkdetaljtype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir type parkdetalj
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system, f.eks. hos parkforvalter i kommunen.
+      codelist: null
+    attribute_count: 6
+  - object_type: Skytebaneinnretning
+    definition: omriss av tekniske anlegg på skytebane - standplass og skiver som ikke blir registrert som f.eks bygninger
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Svømmebasseng
+    definition: basseng for svømming og vannlek
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Taubane
+    definition: innretning hvor tau eller vaiere bærer og eller trekker last over en strekning
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: taubanetype
+      attribute_name: taubanetype
+      type: «CodeList» Taubanetype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hva slags type taubane
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element
+      codelist: null
+    optional_attributes:
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system
+      codelist: null
+    attribute_count: 4
+  - object_type: Taubanemast
+    definition: mast som taubanen er hengt opp i
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NRLobjekter
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen av høydeverdi er utført på topp eller bunn av et element
+      codelist: null
+    optional_attributes:
+    - name: linjebredde
+      attribute_name: linjebredde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: største avstand mellom vaierene som er hengt opp i ei mast
+      codelist: null
+    attribute_count: 3
+  - object_type: Tribune
+    definition: opparbeidet anlegg av metall- stein- mur eller tre for betjening av publikum på kulturarenaer, særlig
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: BeskrivendeHjelpelinjeAnlegg
+    definition: karakteristiske linjer på bygningsmessige- og tekniske anlegg
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: Demning
+    definition: konstruksjon for å heve vannspeilet og danne et kunstig vannmagasin, samt regulere vannføringen
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Elveforbygning
+    definition: konstruksjon i eller langs vassdrag for å sikre mot erosjon, flom eller som miljøtiltak
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Elveterskel
+    definition: kunstig oppbygning i elver som brukes for å lage vannspeil i elveløpet
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FiktivAvgrensningForAnlegg
+    definition: 'fiktiv avgrensningslinje for anlegg Merknad: Brukes når det skal dannes flater av bygningsmessige- og'
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Fiskehjell
+    definition: anordning bygd opp for tørking av fisk
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FiskehjellMøne
+    definition: toppen av rammeverket for fiskehjell
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Fisketrapp
+    definition: innretning i elver for at fisken kan vandre oppover elven
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Flytebrygge
+    definition: flytende plattform som er forankret til bunn og hvor plasseringen kan avhenge av vind og strømretning
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FlytebryggeLandgang
+    definition: landgang for flytebrygger
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FlytebryggeUtligger
+    definition: Utligger for fortøyning av mindre båter som er båter som er forankret i flytebrygge.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: KaiBrygge
+    definition: platformkonstruksjon langs land eller fra land og ut i vannet, brukt som fortøyningssted for større eller
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: havnedatapeker
+      attribute_name: havnedatapeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til Kai-objekt i Havnedata
+      codelist: null
+    attribute_count: 2
+  - object_type: KaiBryggeKant
+    definition: avgrensning av kai mot vann.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Molo
+    definition: kunstig eller naturlig oppbygning som demper eller tilintetgjør bølgebevegelser i sjøen
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Navigasjonsinstallasjon
+    definition: objekt som hjelper sjøfarende å navigere på sjøen.
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Oppdrettskar
+    definition: kar for oppdrett av fisk
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Oppdrettslokalitet
+    definition: fast anlegg for oppdrett av fisk i vann
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til forvaltning av det samme objektet i et eksternt system
+      codelist: null
+    attribute_count: 2
+  - object_type: Pælebunt
+    definition: bunt av stokker som er drevet ned i sjøbunnen, vann eller elver for å lede trafikken eller tømmer
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Rørgate
+    definition: store rør som leder vann frem til foredlingsanlegg, kraftverk, fjernvarmeanlegg, annet vassdrag osv.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: Slipp
+    definition: bane som mindre og middelstore fartøyer kan hales opp ved landsetting, bedding
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om registreringen er utført på topp eller bunn av et element- f.eks. en skråning-
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Sluse
+    definition: byggverk i elv eller kanal med flere slusekamre som gjør det mulig å heve eller senke fartøy fra et vann-
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: geometri-egenskap - omriss
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: sluseType
+      attribute_name: sluseType
+      type: «CodeList» SluseType
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: beskrivelse av selve slusetypen
+      codelist: null
+    attribute_count: 3
+  object_count: 54
+- specification: FKB_VEG_5
+  file: FKB_VEG_5.md
+  object_types:
+  - object_type: Fellesegenskaper
+    definition: abstrakt objekttype som bærer sentrale egenskaper som er anbefalt for bruk i produktspesifikasjoner.
+    geometry_type: UNKNOWN
+    supertype: null
+    mandatory_attributes:
+    - name: identifikasjon
+      attribute_name: identifikasjon
+      type: «dataType» Identifikasjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: unik identifikasjon av et objekt
+      codelist: null
+    - name: oppdateringsdato
+      attribute_name: oppdateringsdato
+      type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: tidspunkt for siste endring på objektet
+      codelist: null
+    - name: datafangstdato
+      attribute_name: datafangstdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: dato når objektet siste gang ble registrert/observert/målt i terrenget
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: sluttdato
+      attribute_name: sluttdato
+      type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Tid for når denne versjonen av objektet var erstattet eller opphørt å eksistere.
+      codelist: null
+    - name: verifiseringsdato
+      attribute_name: verifiseringsdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: dato når dataene er fastslått å være i samsvar med virkeligheten.
+      codelist: null
+    - name: registreringsversjon
+      attribute_name: registreringsversjon
+      type: «CodeList» Registreringsversjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angivelse av hvilken produktspesifikasjon som er utgangspunkt for dataene
+      codelist: null
+    - name: informasjon
+      attribute_name: informasjon
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: generell opplysning.
+      codelist: null
+    - name: eksternPeker
+      attribute_name: eksternPeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objektet i et eksternt system, som ikke er Nasjonal vegdatabank (NVDB).
+      codelist: null
+    attribute_count: 9
+  - object_type: KvalitetPåkrevd
+    definition: abstrakt objekttype med påkrevet kvalitetsangivelse
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: kvalitet
+      attribute_name: kvalitet
+      type: «dataType» Posisjonskvalitet
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: beskrivelse av kvaliteten på stedfestingen
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: KvalitetOpsjonell
+    definition: abstrakt objekttype med valgfri kvalitetsangivelse
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes: []
+    optional_attributes:
+    - name: kvalitet
+      attribute_name: kvalitet
+      type: «dataType» Posisjonskvalitet
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: beskrivelse av kvaliteten på stedfestingen
+      codelist: null
+    attribute_count: 1
+  - object_type: NVDBobjekter
+    definition: abstrakt objekttype som arves fra for flateobjekter som har kobling til NVDB.
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes: []
+    optional_attributes:
+    - name: nvdbPeker
+      attribute_name: nvdbPeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til objekt i NVDB
+      codelist: null
+    attribute_count: 1
+  - object_type: NVDBobjekter_KvalitetPåkrevd
+    definition: abstrakt objekttype som arves fra for objekter med kvalitet påkrevd som har kobling til NVDB
+    geometry_type: UNKNOWN
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes: []
+    optional_attributes:
+    - name: nvdbPeker
+      attribute_name: nvdbPeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til objekt i NVDB
+      codelist: null
+    attribute_count: 1
+  - object_type: Parkeringsområde
+    definition: Område for parkering av kjøretøy.
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    attribute_count: 2
+  - object_type: Trafikkøy
+    definition: Område som er begrenset av kjørefelt på alle sider og som normalt ikke skal benyttes av kjøretøy.
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    attribute_count: 2
+  - object_type: VegGåendeOgSyklende
+    definition: Ferdselsområde for gående og syklende. Her inngår fortau, gangveg, gang- og sykkelveg, sykkelveg, trapp og
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: typeveg
+      attribute_name: typeveg
+      type: «CodeList» TypevegGåendeOgSyklende
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Typeveg er den sentrale egenskapen for å vise hvilken hva slags ferdsel som kan skje på
+      codelist: null
+    - name: vegOverVeg
+      attribute_name: vegOverVeg
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om vegen ligger øverst av flere andre veger
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på, representert som punkt
+      codelist: null
+    - name: vegsystemreferanse
+      attribute_name: vegsystemreferanse
+      type: «dataType» Vegsystemreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sammensatt identifikator for vegsystemreferanse
+      codelist: null
+    attribute_count: 5
+  - object_type: VegKjørende
+    definition: Ferdselsområde for motorisert trafikk. Her inngår gatetun, enkel bilveg, kanalisert bilveg, rundkjøring og
+      rampe.
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: vegsystemreferanse
+      attribute_name: vegsystemreferanse
+      type: «dataType» Vegsystemreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sammensatt identifikator for vegsystemreferanse
+      codelist: null
+    - name: vegOverVeg
+      attribute_name: vegOverVeg
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av om vegen ligger øverst av flere andre veger
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sted som objektet eksisterer på, representert som punkt
+      codelist: null
+    - name: typeveg
+      attribute_name: typeveg
+      type: «CodeList» TypevegKjørende
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Typeveg er den sentrale egenskapen for å vise hvilken hva slags ferdsel som kan skje på
+      codelist: null
+    attribute_count: 5
+  - object_type: VegAnnenAvgrensning
+    definition: Reell eller fiktiv avgrensing som avgrenser veg mot privat avkjørsel, eller annet vegareal som ligger i tilknytning
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Vegdekkekant
+    definition: avgrensning for alle typer flatedannede vegdekker.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistrering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: VegFiktivGrense
+    definition: Fiktiv avgrensningslinje (lukkelinje) for vegflater.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetOpsjonell
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: AnnetVegarealAvgrensning
+    definition: avgrensning av privat avkjørsel, ytterkant av åpne parkeringsplasser i tilknytning til veg, korte gang- og
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FartsdemperAvgrensning
+    definition: Avgrensning av forhøyning i veger og/eller gater for å begrense kjørehastigheten.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: FeristAvgrensning
+    definition: Rist eller gitter som er innbygd i vegbanen, og som hindrer dyr i å komme over.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: GangfeltAvgrensning
+    definition: Avgrensning av gangfelt.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Kantstein
+    definition: Kantstein som avgrenser vegdekke (oftest bilveg) mot fortau eller lignende
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: nedsenketKantstein
+      attribute_name: nedsenketKantstein
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Egenskap for å angi om kantstein er nedsenket eller ikke. Dersom egenskapen ikke er angitt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Kjørebanekant
+    definition: Avgrensing av kjørebanen, som ofte identifiseres med hjelp av oppmerking på veien.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: OverkjørbartArealAvgrensning
+    definition: Den indre eller ytre avgrensningen av et overkjørbart areal.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistrering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Skiltportal
+    definition: Anordning for å henge opp skilt, teknisk utstyr etc. over kjørefeltene.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Trafikksignalpunkt
+    definition: Trafikksignal inkludert signalhoder og stolpe lokalisert i ett punkt.
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistrering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Vegbom
+    definition: Fysisk vegbom. Kan både være bommer som permanent sperrer for kjøring (vegsperringer) og bommer som kan
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: funksjon
+      attribute_name: funksjon
+      type: «CodeList» FunksjonVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Vegbommens funksjon
+      codelist: null
+    - name: vegbomtype
+      attribute_name: vegbomtype
+      type: «CodeList» TypeVegbom
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvilken type vegbommen er av
+      codelist: null
+    attribute_count: 4
+  - object_type: Vegoppmerking
+    definition: Langs- og/eller tverrgående vegoppmerkingslinjer i vegen. Vegoppmerking nyttes for å lede, varsle eller regulere
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes:
+    - name: bruksområde
+      attribute_name: bruksområde
+      type: «CodeList» BruksområdeVegoppmerking
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: bruksområde for vegopmmerking (hentes fra NVDB) )
+      codelist: null
+    attribute_count: 2
+  - object_type: Vegrekkverk
+    definition: En anordning som skal hindre at kjøretøy forlater vegen.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistrering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes:
+    - name: rekkverkstype
+      attribute_name: rekkverkstype
+      type: «CodeList» TypeVegrekkverk
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: type rekkverk
+      codelist: null
+    attribute_count: 3
+  - object_type: Vegskulderkant
+    definition: Ytterkant av kjørbart felt som ligger inntil kjørebanen. Dette inkluderer rom for rekkverk.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» NVDBobjekter_KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: høydereferanse
+      attribute_name: høydereferanse
+      type: «CodeList» Høydereferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: koordinatregistrering utført på topp eller bunn av et objekt
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  object_count: 25
+- specification: FKB_VANN_5
+  file: FKB_VANN_5.md
+  object_types:
+  - object_type: Kystkontur
+    definition: grense mellom land og sjø, definert som midlere høyvannslinje.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: kystreferanse
+      attribute_name: kystreferanse
+      type: «CodeList» Kystreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: kystkonturens referansenivå
+      codelist: null
+    - name: høyde
+      attribute_name: høyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: et punkts vertikale avstand over en fysisk eller matematisk definert referanseflate
+      codelist: null
+    attribute_count: 4
+  - object_type: KystkonturTekniskeAnlegg
+    definition: angivelse av kystkontur der denne består av tekniske anlegg, definert som midlere høyvann
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: kystkonstruksjonstype
+      attribute_name: kystkonstruksjonstype
+      type: «CodeList» Kystkonstruksjonstype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av kystkonturens konstruksjon
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: kystreferanse
+      attribute_name: kystreferanse
+      type: «CodeList» Kystreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: kystkonturens referansenivå
+      codelist: null
+    - name: høyde
+      attribute_name: høyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: et punkts vertikale avstand over en fysisk eller matematisk definert referanseflate
+      codelist: null
+    attribute_count: 5
+  - object_type: Skjær
+    definition: generalisert punktobjekt for små øyer eller landareal
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: sted som objektet eksisterer på
+      codelist: null
+    optional_attributes:
+    - name: høyde
+      attribute_name: høyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: et punkts vertikale avstand over en fysisk eller matematisk definert referanseflate
+      codelist: null
+    attribute_count: 2
+  - object_type: Havflate
+    definition: havområde som avgrenses av Kystkontur, VannFiktivGrense og KystkonturTekniskAnlegg
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets plassering
+      codelist: null
+    attribute_count: 3
+  - object_type: Elvekant
+    definition: konturlinje mellom land og elveflate
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Elv
+    definition: større vannvei for rennende vann representert ved flate
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: vannBredde
+      attribute_name: vannBredde
+      type: «CodeList» VannBredde
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: grov klassifisering av vassdrag etter gjennomsnittlig bredde over lengre strekninger
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets plassering
+      codelist: null
+    attribute_count: 4
+  - object_type: Kanalkant
+    definition: konturlinje mellom land og kanalflate
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Kanal
+    definition: større menneskeskapt vannvei for rennende vann representert ved flate
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: vannBredde
+      attribute_name: vannBredde
+      type: «CodeList» VannBredde
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: grov klassifisering av vassdrag etter gjennomsnittlig bredde over lengre strekninger
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets plassering
+      codelist: null
+    attribute_count: 4
+  - object_type: Innsjøkant
+    definition: konturlinje mellom land og innsjø
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes:
+    - name: høyde
+      attribute_name: høyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: kurvas vertikale avstand over en fysisk eller matematisk definert referanseflate.
+      codelist: null
+    attribute_count: 3
+  - object_type: Innsjø
+    definition: en ferskvannsflate som ikke er rennende vann
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: regulert
+      attribute_name: regulert
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir om innsjø er oppdemt/regulert
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets posisjon
+      codelist: null
+    - name: høyde
+      attribute_name: høyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets vertikale avstand over en fysisk eller matematisk definert referanseflate.
+      codelist: null
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: peker til eksternt system som inneholder mer informasjon om objekttypen
+      codelist: null
+    attribute_count: 6
+  - object_type: ElvBekk
+    definition: mindre vannvei for rennende vann representert ved senterlinje
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: vannBredde
+      attribute_name: vannBredde
+      type: «CodeList» VannBredde
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: grov klassifikasjon av vassdrag etter gjennomsnittlig bredde over lengre strekninger
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: KanalGrøft
+    definition: mindre menneskeskapt vannvei for rennende vann representert ved senterlinje
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: vannBredde
+      attribute_name: vannBredde
+      type: «CodeList» VannBredde
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: grov klassifikasjon av vassdrag etter gjennomsnittlig bredde over lengre strekninger
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 3
+  - object_type: VeggrøftÅpen
+    definition: åpen drenering parallelt med veg
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: SnøIsbreKant
+    definition: grense mellom snø eller isbre og barmark der det er usikkert om det er isbre eller snø
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: SnøIsbre
+    definition: flate som er dekket med "evigvarende" snø eller isbre
+    geometry_type: FLATE
+    supertype: Generelle elementer::«FeatureType» Fellesegenskaper
+    mandatory_attributes:
+    - name: område
+      attribute_name: område
+      type: GM_Surface(http://skjema.geonorge.no/SOSI/basistype/GM_Surface)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets utstrekning
+      codelist: null
+    optional_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets plassering
+      codelist: null
+    attribute_count: 2
+  - object_type: Flomløpkant
+    definition: begrensningslinje for store markerte elveløp hvor det pga regulering eller andre årsaker bare en sjelden
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger overgang mellom ulike fenomener
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: VannFiktivGrense
+    definition: fiktiv delelinje for vannflater, delelinjetype spesifiseres på egenskapsnivå
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetOpsjonell
+    mandatory_attributes:
+    - name: vannSperretype
+      attribute_name: vannSperretype
+      type: «CodeList» VannSperretype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: hjelpelinjetyper for å avgrense eller dele opp vannflater
+      codelist: null
+    - name: grense
+      attribute_name: grense
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: avgrensning for fiktive hjelpelinjer
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: KonnekteringVann
+    definition: kunstig objekt hvor senterlinjen representerer en fiktiv linje som skjøter sammen lenker der det er hull i
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetOpsjonell
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: fiktiv linje som skjøter sammen lenker der det er hull i beskrivelsen av vannforløp
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  object_count: 18
+- specification: FKB_Traktorvegsti_5
+  file: FKB_Traktorvegsti_5.md
+  object_types:
+  - object_type: Veglenke
+    definition: Objekttype som representerer alle senterlinjelenker i FKB-TraktorvegSti.
+    geometry_type: KURVE
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    - name: typeveg
+      attribute_name: typeveg
+      type: «CodeList» Typeveg
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: egenskap for å angi type veglenke strekningen representerer.
+      codelist: null
+    - name: konnekteringslenke
+      attribute_name: konnekteringslenke
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: kunstig objekt hvor senterlinjen representerer en konstruert linje som skjøter sammen lenker der det er
+      codelist: null
+    - name: kommunenummer
+      attribute_name: kommunenummer
+      type: «CodeList» Kommunenummer
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Egenskap for nummerering av kommune objektet befinner seg i, i henhold til SSB sin offisielle liste.
+      codelist: null
+    - name: belysning
+      attribute_name: belysning
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av permanent belysning langs sti eller løype.
+      codelist: null
+    - name: barmarksløype
+      attribute_name: barmarksløype
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Betinget egenskap som kun brukes for veglenker som er omfattet av barmarksløyper i Finnmark (jf.
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    - name: serviceveg
+      attribute_name: serviceveg
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Vegstrekning som ikke er åpen for allmenn trafikk, men som benyttes for å komme til tekniske anlegg el.l.
+      codelist: null
+    - name: beredskapsveg
+      attribute_name: beredskapsveg
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Vegstrekning som ikke er åpen for allmenn trafikk. Åpnes for å lede trafikk til en annen veg når
+      codelist: null
+    optional_attributes:
+    - name: veglenkeadresse
+      attribute_name: veglenkeadresse
+      type: «dataType» Veglenkeadresse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: 'sammensatt identifikator for veglenkeadresse. Merknad: Komplett vegadresse består i tillegg av'
+      codelist: null
+    - name: vegsystemreferanse
+      attribute_name: vegsystemreferanse
+      type: «dataType» Vegsystemreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sammensatt identifikator for vegreferanse
+      codelist: null
+    - name: klasselandbruksveg
+      attribute_name: klasselandbruksveg
+      type: «CodeList» KlasseLandbruksveg
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: kalissifisering av landbruksveger i henhold til normaler for landbruksveier
+      codelist: null
+    - name: rutemerking
+      attribute_name: rutemerking
+      type: «CodeList» Rutemerking
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: forteller om det er merking langs en sti, løype, veg, sykkelvei mv. Det skal være samsvar mellom
+      codelist: null
+    - name: eksternpeker
+      attribute_name: eksternpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objekt i et eksternt system, som ikke er Nasjonal database for turruter.
+      codelist: null
+    - name: turruterpeker
+      attribute_name: turruterpeker
+      type: URI(http://skjema.geonorge.no/SOSI/basistype/URI)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: referanse til objekt i Nasjonal database for turruter.
+      codelist: null
+    attribute_count: 15
+  - object_type: Vegsperring
+    definition: Objekttype som representerer fysisk sperring langs traktorveg eller sti.
+    geometry_type: PUNKT
+    supertype: Generelle elementer::«FeatureType» KvalitetPåkrevd
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Gir punkt som geometrisk representerer objektet.
+      codelist: null
+    - name: funksjon
+      attribute_name: funksjon
+      type: «CodeList» FunksjonVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir sperringens funksjon
+      codelist: null
+    - name: kommunenummer
+      attribute_name: kommunenummer
+      type: «CodeList» Kommunenummer
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Egenskap for nummerering av kommune objektet befinner seg i, i henhold til SSB sin offisielle liste.
+      codelist: null
+    optional_attributes:
+    - name: typevegsperring
+      attribute_name: typevegsperring
+      type: «CodeList» TypeVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angir type sperring
+      codelist: null
+    - name: gjeldertidsrom
+      attribute_name: gjeldertidsrom
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angir tidsrommet (hhmm-hhmm) eller (mnd-mnd) vegsperringen gjelder
+      codelist: null
+    - name: vegsystemreferanse
+      attribute_name: vegsystemreferanse
+      type: «dataType» Vegsystemreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sammensatt identifikator for vegreferanse
+      codelist: null
+    - name: eier
+      attribute_name: eier
+      type: «CodeList» EierVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angir eier av sperring
+      codelist: null
+    attribute_count: 7
+  object_count: 2
+- specification: FKB_LEDNIGN
+  file: FKB_LEDNIGN.md
+  object_types:
+  - object_type: Bardun
+    definition: tau, vaier eller liknende som støtter eller stabiliserer høye gjenstander
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingSenterlinje
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Flymarkør
+    definition: markering av store luftspenn over daler og fjorder
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Jordingsledning
+    definition: ledning hvor formålet er å lede farlige overspenninger til jord. ledningen er under normale forhold ikke
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» Ledning
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Kabelkanal
+    definition: brukes som fremføringsvei for ledning
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» Ledning
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Kum
+    definition: et fysisk objekt som regel av stål, plast eller betong som er gravd ned i bakken, og som lager et rom
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingGrense
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: LedningVertikalAvstand
+    definition: punkt som angir maks/min vertikalavstand for et luftspenn
+    geometry_type: PUNKT
+    supertype: Objekttyper - abstrakte::«FeatureType» Nettverkskomponent
+    mandatory_attributes:
+    - name: punkt
+      attribute_name: punkt
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: posisjon for måling av vertikalavstand
+      codelist: null
+    - name: vertikalAvstandType
+      attribute_name: vertikalAvstandType
+      type: «CodeList» VertikalAvstandType
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir om det er maks/min eller ev. en annen type vertikalavstand som objektet angir
+      codelist: null
+    - name: vertikalAvstand
+      attribute_name: vertikalAvstand
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: avstand i vertikalplanet fra objektet til underliggende terreng- eller vannoverflate
+      codelist: null
+    optional_attributes:
+    - name: antallLaserPunkt
+      attribute_name: antallLaserPunkt
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: antallet klassifiserte laserpunkt som er med på å bestemme vektorisert objekt. Kan angis der
+      codelist: null
+    attribute_count: 4
+  - object_type: Kumlokk
+    definition: et deksel over en kum eller annet hulrom under bakkenivå
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes:
+    - name: kumlokkform
+      attribute_name: kumlokkform
+      type: «CodeList» Kumlokkform
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: kumlokkets geometriske utforming
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Luftledning
+    definition: vaier/kabel mellom to faste forankringspunkt, som er eller kan være strøm- eller signalførende
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» Ledning
+    mandatory_attributes:
+    - name: fase
+      attribute_name: fase
+      type: «CodeList» Fase
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av intern plassering i grunnriss for aktuell faseline
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Lysarmatur
+    definition: selve det elektriske punktet som gir lys
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes:
+    - name: plassering
+      attribute_name: plassering
+      type: «CodeList» Punktplassering
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angivelse av hvor lysarmaturet er plassert
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Mast
+    definition: alle konstruksjoner som primært er laget for å holde ledningsnett/komponent oppe fra bakken
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes:
+    - name: belysning
+      attribute_name: belysning
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir om det er montert ett eller flere lysarmaturer i masta
+      codelist: null
+    optional_attributes:
+    - name: antallLaserPunkt
+      attribute_name: antallLaserPunkt
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: antallet klassifiserte laserpunkt som er med på å bestemme vektorisert objekt
+      codelist: null
+    - name: konstruksjon
+      attribute_name: konstruksjon
+      type: «CodeList» Mastekonstruksjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: hvordan masta er utformet
+      codelist: null
+    - name: linjebredde
+      attribute_name: linjebredde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: største avstanden mellom ytterfasene (ledningene) i ei mast
+      codelist: null
+    - name: vertikalAvstand
+      attribute_name: vertikalAvstand
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: mastens maksimale vertikale høyde over under-/omkringliggende terreng eller
+      codelist: null
+    attribute_count: 5
+  - object_type: Masteomriss
+    definition: ytre avgrensning av mastens fotavtrykk på bakken
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingGrense
+    mandatory_attributes: []
+    optional_attributes:
+    - name: type
+      attribute_name: type
+      type: «CodeList» Mastekonstruksjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: type mast
+      codelist: null
+    attribute_count: 1
+  - object_type: Nettverkstasjon
+    definition: et fysisk, gjerne bygningsmessig, objekt som inneholder komponenter som gjør en eller annen behandling
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes:
+    - name: plassering
+      attribute_name: plassering
+      type: «CodeList» Stasjonsplassering
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: angir hvor nettverksstasjonen er plassert
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Nettverkstasjonomriss
+    definition: ytre avgrensning av nettverkstasjonen, i grunnriss
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingGrense
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Skap
+    definition: beskyttelseskasse plassert vanligvis på bakken, som inneholder koblinger for elektrisk strøm, signal eller
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Trase
+    definition: den mest mulig geografisk riktige posisjonen for en framføring av ledning(er)
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» Ledning
+    mandatory_attributes: []
+    optional_attributes:
+    - name: trasenavn
+      attribute_name: trasenavn
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: navn på trasen
+      codelist: null
+    attribute_count: 1
+  - object_type: Vindturbin
+    definition: en kontainer som betegner en hel "vindmølle". En vindturbin har en generator
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingPunkt
+    mandatory_attributes: []
+    optional_attributes:
+    - name: rotorbladlengde
+      attribute_name: rotorbladlengde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: lengde rotorblad
+      codelist: null
+    - name: navhøyde
+      attribute_name: navhøyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: vertikal avstand fra omkringliggende terreng eller vann og til topp vindturbintårn
+      codelist: null
+    attribute_count: 2
+  - object_type: Vindturbinomriss
+    definition: ytre avgrensning av vindturbinens fotavtrykk på bakken
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingGrense
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  - object_type: Åk
+    definition: en hovedsaklig liggende konstruksjon festet i (vanligvis) to master, ei på hver side av bane
+    geometry_type: UNKNOWN
+    supertype: Objekttyper - abstrakte::«FeatureType» KoplingSenterlinje
+    mandatory_attributes: []
+    optional_attributes: []
+    attribute_count: 0
+  object_count: 18
+- specification: NVDB_Vegnett_pluss_1
+  file: NVDB_Vegnett_pluss_1.md
+  object_types:
+  - object_type: Veglenke
+    definition: Objekttype som representerer lenker i vegnettet
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Objekt_veglenke
+    mandatory_attributes:
+    - name: typeVeg
+      attribute_name: typeVeg
+      type: «codeList» TypeVeg
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: type veg (FormOfWay).
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: forløp som følger objektets sentrale del
+      codelist: null
+    optional_attributes:
+    - name: detaljnivå
+      attribute_name: detaljnivå
+      type: «codeList» Vegdetaljnivå
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Detaljnivå i vegnettet.
+      codelist: null
+    - name: konnekteringslenke
+      attribute_name: konnekteringslenke
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: angir at en lenke kun eksisterer for å knytte sammen andre lenker. Et kunstig objekt hvor senterlinjen
+      codelist: null
+    - name: veglenkeadresse
+      attribute_name: veglenkeadresse
+      type: «dataType» Veglenkeadresse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: 'sammensatt identifikator for veglenkeadresse. Merknad: Komplett vegadresse består i tillegg av husnummer
+        og'
+      codelist: null
+    - name: vegsystemreferanse
+      attribute_name: vegsystemreferanse
+      type: «dataType» Vegsystemreferanse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: sammensatt identifikator for vegsystemreferanse
+      codelist: null
+    - name: feltoversikt
+      attribute_name: feltoversikt
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: kjørefeltnummer angir stedfesting i vegens tverretning
+      codelist: null
+    attribute_count: 7
+  - object_type: Beredskapsveg
+    definition: Vegstrekning som ikke er åpen for allmenn trafikk. Åpnes for å lede trafikk til en annen veg når hovedvegen
+      stenges.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: bruksområde
+      attribute_name: bruksområde
+      type: «CodeList» BruksområdeBeredskapsveg
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvilket bruksområde beredskapsvegen i hovedsak benyttes til.
+      codelist: null
+    attribute_count: 2
+  - object_type: Fartsgrense
+    definition: Høyeste tillatte hastighet på en vegstrekning.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: fartsgrenseVerdi
+      attribute_name: fartsgrenseVerdi
+      type: «codeList» FartsgrenseVerdi
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Fartsgrense. Høyeste tillatte hastighet på en vegstrekning.
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: merknad
+      attribute_name: merknad
+      type: «codeList» Merknad
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: 'Gir merknad knyttet til fartsgrense. Kodeliste: "Privat skiltet" (23050), "Privat veg innenfor fartsgrensesone"'
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer. Påkrevd der ny fartsgrense avviker fra standardgrensene 50 i tettbygd strøk og 80
+        i
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når fartsgrense ble satt i drift. Den dato skiltene ble "avduket".
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem
+      codelist: null
+    attribute_count: 6
+  - object_type: FartsgrenseVariabel
+    definition: Høyeste tillatte hastighet på en vegstrekning innenfor et avgrenset tidsrom.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: fartsgrenseVerdi
+      attribute_name: fartsgrenseVerdi
+      type: «codeList» FartsgrenseVerdiVariabel
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: 'Verdien på fartsgrensen i angitt tidsrom Enhet: Kilometer/time'
+      codelist: null
+    - name: type
+      attribute_name: type
+      type: «codeList» TypeFartsgrenseVariabel
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken type variabel fartsgrense det er
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: ukedag
+      attribute_name: ukedag
+      type: «codeList» Ukedag
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir ukedager en variabel fartsgrense gjelder for.
+      codelist: null
+    - name: datoFra
+      attribute_name: datoFra
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) som variabel fartsgrense gjelder fra og med i et normalår.
+      codelist: null
+    - name: datoTil
+      attribute_name: datoTil
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) som variabel fartsgrense gjelder til og med i et normalår.
+      codelist: null
+    - name: klokkeslettFra
+      attribute_name: klokkeslettFra
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir tidspunkt (hhmm) på døgnet som variabel fartsgrense gjelder fra.
+      codelist: null
+    - name: klokkeslettTil
+      attribute_name: klokkeslettTil
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir tidspunkt på døgnet (hhmm) som variabel fartsgrense gjelder til
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når fartsgrense ble satt i drift. Den dato skiltene ble "avduket".
+      codelist: null
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Kan gi merknad i forhold til variabel fartsgrense. F.eks spesifikasjon av gyldighet, retningslinjer for
+        nedsetting av
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem
+      codelist: null
+    - name: prosjektreferanse
+      attribute_name: prosjektreferanse
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Referanse til prosjekt. Benyttes for å lettere kunne skille nye data fra eksisterende data i NVDB
+      codelist: null
+    attribute_count: 13
+  - object_type: Ferjesamband
+    definition: Overfart som trafikkeres av bilferje. Kan ha to eller flere anløpssteder.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: navn
+      attribute_name: navn
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir navn på ferjesambandet.
+      codelist: null
+    - name: ferjesambands_Id
+      attribute_name: ferjesambands_Id
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Unik ID for ferjesamband. Benyttes i Ferjedatabanken og i billetteringssystem.
+      codelist: null
+    - name: neTEx_id
+      attribute_name: neTEx_id
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Unik ID for ferjesambandet. ID skal være i henhold til NeTEx-format og være lik ferjesambandets ID i nasjonal
+      codelist: null
+    - name: sambandstype
+      attribute_name: sambandstype
+      type: «codeList» Sambandstype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvilken type samband det er, dvs. om det er på stat-, fylke- eller kommunenivå.
+      codelist: null
+    - name: driftsstatus
+      attribute_name: driftsstatus
+      type: «codeList» DriftsstatusFerjesamband
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: driftsstatus for ferjesamband
+      codelist: null
+    - name: referanseTilEksternInfo
+      attribute_name: referanseTilEksternInfo
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til ekstern informasjon. Angis i form av URL.
+      codelist: null
+    - name: driftFraDato
+      attribute_name: driftFraDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) når sommersambandet settes i drift i et normalår.
+      codelist: null
+    - name: driftTilDato
+      attribute_name: driftTilDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) når sommersambandet tas ut av drift et normalår.
+      codelist: null
+    attribute_count: 9
+  - object_type: FunksjonellVegklasse
+    definition: En klassifisering basert på hvor viktig en veg er for det totale vegnettets forbindelsesmuligheter. Brukes
+      blant annet for vekting i
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: vegklasse
+      attribute_name: vegklasse
+      type: «codeList» Vegklasse
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir funksjonell vegklasse
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Permanent merknad til aktuell forekomst. Kan gi informasjoner som ikke er mulig å gi på annet vis.
+      codelist: null
+    attribute_count: 3
+  - object_type: GjennomkjøringForbudt
+    definition: Angir start av strekning eller et område med gjennomkjøring forbudt. Hvor det er forbudt å kjøre til angis
+      med et assosiert
+    geometry_type: PUNKT
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: retning
+      attribute_name: retning
+      type: «CodeList» Retning
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken retning gjennomkjøring forbudt gjelder.
+      codelist: null
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektetsposisjon. Plasseres ved start av gjennomkjøring forbudt (ved gjennomkjøring forbudt
+        skilt)
+      codelist: null
+    optional_attributes:
+    - name: gjelderFor
+      attribute_name: gjelderFor
+      type: «CodeList» GjelderFor
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hva slags kjøretøy det er gjennomkjøring forbudt for
+      codelist: null
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir merknad knyttet til gjennomkjøring forbudt.
+      codelist: null
+    - name: gjelderUkedag
+      attribute_name: gjelderUkedag
+      type: «CodeList» GjelderUkedag
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder kun angitt ukedag.
+      codelist: null
+    - name: unntakForBuss
+      attribute_name: unntakForBuss
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Verdi settes til True/Ja dersom gjennomkjøring forbudt ikke gjelder buss
+      codelist: null
+    - name: unntakForTaxi
+      attribute_name: unntakForTaxi
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Verdi settes til True/Ja dersom gjennomkjøring forbudt ikke gjelder taxi
+      codelist: null
+    - name: unntakForMoped
+      attribute_name: unntakForMoped
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Verdi settes til True/Ja dersom gjennomkjøring forbudt ikke gjelder moped
+      codelist: null
+    - name: unntakForMotorsykkel
+      attribute_name: unntakForMotorsykkel
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Verdi settes til True/Ja dersom gjennomkjøring forbudt ikke gjelder motorsykkel
+      codelist: null
+    - name: unntakForTraktor
+      attribute_name: unntakForTraktor
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Verdi settes til True/Ja dersom gjennomkjøring forbudt ikke gjelder traktor
+      codelist: null
+    - name: gjelderHverdagerULørdagFraKl
+      attribute_name: gjelderHverdagerULørdagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på hverdager unntatt lørdag fra angitt klokkeslett..
+      codelist: null
+    - name: gjelderHverdagerULørdagTilKl
+      attribute_name: gjelderHverdagerULørdagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på hverdager unntatt lørdag til angitt klokkeslett
+      codelist: null
+    - name: gjelderLørdagFraKl
+      attribute_name: gjelderLørdagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på lørdager fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderLørdagTilKl
+      attribute_name: gjelderLørdagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på lørdager til angitt klokkeslett
+      codelist: null
+    - name: gjelderSøndagFraKl
+      attribute_name: gjelderSøndagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på søndager fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderSøndagTilKl
+      attribute_name: gjelderSøndagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på søndager til angitt klokkeslett.
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når gjennomkjøring forbudt ble innført. Den dato skilt ble "avduket".
+      codelist: null
+    attribute_count: 19
+  - object_type: GjennomkjøringForbudtTil
+    definition: Angir slutten på en strekning eller et område med gjennomkjøring forbudt.
+    geometry_type: PUNKT
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektetsposisjon. Plasseres ved slutten av gjennomkjøring forbudt
+      codelist: null
+    optional_attributes:
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir merknad knyttet til gjennomkjøring forbudt.
+      codelist: null
+    attribute_count: 2
+  - object_type: Gågatereguleringer
+    definition: Gate uten fortau reservert for gående hvor trafikkreglene for gågate gjelder.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Linje/kurve er manus for å etablere vegobjektets stedfesting på vegnettet. Geometrien benyttes kun i forbindelse
+      codelist: null
+    optional_attributes:
+    - name: varetransportHverdagULørdagPeriode1FraKl
+      attribute_name: varetransportHverdagULørdagPeriode1FraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport hverdag unntatt lørdag periode 1, fra klokkeslett.
+      codelist: null
+    - name: varetransportHverdagULørdagPeriode1TilKl
+      attribute_name: varetransportHverdagULørdagPeriode1TilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport hverdag unntatt lørdag periode 1, til klokkeslett.
+      codelist: null
+    - name: varetransportHverdagULørdagPeriode2FraKl
+      attribute_name: varetransportHverdagULørdagPeriode2FraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport hverdag unntatt lørdag periode 2, fra klokkeslett.
+      codelist: null
+    - name: varetransportHverdagULørdagPeriode2TilKl
+      attribute_name: varetransportHverdagULørdagPeriode2TilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport hverdag unntatt lørdag periode 2, til klokkeslett.
+      codelist: null
+    - name: varetransportLørdagPeriode1FraKl
+      attribute_name: varetransportLørdagPeriode1FraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport lørdag periode 1, fra klokkeslett.
+      codelist: null
+    - name: varetransportLørdagPeriode1TilKl
+      attribute_name: varetransportLørdagPeriode1TilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport lørdag periode 1, til klokkeslett.
+      codelist: null
+    - name: varetransportLørdagPeriode2FraKl
+      attribute_name: varetransportLørdagPeriode2FraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport lørdag periode 2, fra klokkeslett.
+      codelist: null
+    - name: varetransportLørdagPeriode2TilKl
+      attribute_name: varetransportLørdagPeriode2TilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Varetransport lørdag periode 2, til klokkeslett.
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når gågate ble innført. Den dato skilt ble "avduket".
+      codelist: null
+    attribute_count: 12
+  - object_type: Høydebegrensning
+    definition: Strekning i vegnettet hvor kjøretøy kan komme i konflikt med overliggende hinder
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: typeHinder
+      attribute_name: typeHinder
+      type: «codeList» TypeHinder
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken type hinder det er tale om
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Gir linje/kurve som geometrisk representerer objektet.
+      codelist: null
+    optional_attributes:
+    - name: skiltaHøyde
+      attribute_name: skiltaHøyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir skilta høyde i forbindelse med høydebegrensningen. Håndbok N300 (050) beskriver hvordan verdier
+      codelist: null
+    - name: beregnetHøyde
+      attribute_name: beregnetHøyde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Minste målte høyde minus sikkerhetsmargin, avrundet ned til nærmeste desimeter (ref. regelverk i håndbok
+      codelist: null
+    - name: navn
+      attribute_name: navn
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir navn tilknyttet høydebegrensning
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når høydegrenseskilt ble satt opp/"avduket".
+      codelist: null
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Merknad som gjelder for den bestemte forekomsten uavhengig av tid
+      codelist: null
+    - name: bredde
+      attribute_name: bredde
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: 'Angir minste bredde mellom høydemåling for venstre og høyre side. Enhet: Meter'
+      codelist: null
+    - name: hMinHøyreKant
+      attribute_name: hMinHøyreKant
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir minste høyde for høydebegrensningens høyre kjørebanekant. Høyre og venstre bestemmes ut fra at en
+        er
+      codelist: null
+    - name: hMinMidt
+      attribute_name: hMinMidt
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: 'Angir minste høyde innenfor et 3-metersbelte vanligvis plassert i midten av høydebegrensningen. Enhet:
+        Meter'
+      codelist: null
+    - name: hMinVenstreKant
+      attribute_name: hMinVenstreKant
+      type: Real(http://skjema.geonorge.no/SOSI/basistype/Real)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir minste høyde for høydebegrensningens venstre kjørebanekant. Høyre og venstre bestemmes ut fra at
+        en
+      codelist: null
+    - name: målemetode
+      attribute_name: målemetode
+      type: «codeList» MålemetodeHøydebegrensning
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir målemetode som er brukt for å måle høyder
+      codelist: null
+    - name: måledato
+      attribute_name: måledato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato når innmåling er gjort
+      codelist: null
+    - name: prosjektreferanse
+      attribute_name: prosjektreferanse
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Referanse til prosjekt. Benyttes for å lettere kunne skille nye data fra eksisterende data i NVDB
+      codelist: null
+    attribute_count: 16
+  - object_type: Jernbanekryssing
+    definition: Sted i vegnettet hvor veg og jernbane krysses
+    geometry_type: PUNKT
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: typeJernbanekryssing
+      attribute_name: typeJernbanekryssing
+      type: «codeList» TypeJernbanekryssing
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken type vegobjektet er av
+      codelist: null
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Gir punkt som geometrisk representerer objektet.
+      codelist: null
+    optional_attributes:
+    - name: særskiltFare
+      attribute_name: særskiltFare
+      type: «CodeList» særskiltFare
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Særskilte faremoment som trafikantene bør ta hensyn til ved passering av jernbanesporet.
+      codelist: null
+    - name: tilleggsinformasjon
+      attribute_name: tilleggsinformasjon
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Supplerende informasjon om vegobjektet som ikke framkommer direkte av andre egenskapstyper
+      codelist: null
+    attribute_count: 4
+  - object_type: Landbruksvegklasse
+    definition: Landbruksmyndighetene sin inndeling av landbruksveger, ut i fra støtteordninger
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: klasseLandbruksveg
+      attribute_name: klasseLandbruksveg
+      type: «codeList» KlasseLandbruksveg
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Klasse landbruksveg ihht. Landbruksmyndighetenes normaler
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes: []
+    attribute_count: 2
+  - object_type: Motorveg
+    definition: Strekninger som har vedtatt status motorveg.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: motorvegtype
+      attribute_name: motorvegtype
+      type: «codeList» Motorvegtype
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken type motorveg det er tale om
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Gir linje/kurve som geometrisk representerer objektet.
+      codelist: null
+    optional_attributes:
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når motorvegen ble satt i drift. Den dato skilt ble "avduket".
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem
+      codelist: null
+    attribute_count: 5
+  - object_type: Serviceveg
+    definition: Vegstrekning som ikke er åpen for allmenn trafikk, men som benyttes for å komme til tekniske anlegg el.l.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes: []
+    attribute_count: 1
+  - object_type: Svingerestriksjon
+    definition: Angir svingerestriksjon
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Kurve som skal bestå av 3 punkter og angi hvor det er forbudt å svinge
+      codelist: null
+    optional_attributes:
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Kan gi permanent merknad. F.eks "høyresving forbudt"
+      codelist: null
+    - name: gjelderHverdagerULørFraKl
+      attribute_name: gjelderHverdagerULørFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gjennomkjøring forbudt gjelder på hverdager unntatt lørdag fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderHverdagerULørTilKl
+      attribute_name: gjelderHverdagerULørTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder på hverdager unntatt lørdag til angitt klokkeslett.
+      codelist: null
+    - name: gjelderLørdagFraKl
+      attribute_name: gjelderLørdagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder på lørdager fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderLørdagTilKl
+      attribute_name: gjelderLørdagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder på lørdager til angitt klokkeslett.
+      codelist: null
+    - name: gjelderSøndagFraKl
+      attribute_name: gjelderSøndagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder på søndager fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderSøndagTilKl
+      attribute_name: gjelderSøndagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder på søndager til angitt klokkeslett.
+      codelist: null
+    - name: gjelderUkedag
+      attribute_name: gjelderUkedag
+      type: «CodeList» GjelderUkedag
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Svingeforbud gjelder kun angitt ukedag.
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer. Påkrevd for svingerestriksjoner som er skiltet.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når svingerestriksjonen ble innført. Den dato skilt ble "avduket".
+      codelist: null
+    attribute_count: 12
+  - object_type: TillattKjøreretning
+    definition: Geometriretningen angir tillatt kjøreretning.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: plassering av tillatt kjøreretning
+      codelist: null
+    optional_attributes:
+    - name: syklingMotKjøreretningTillatt
+      attribute_name: syklingMotKjøreretningTillatt
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir om det er lov å sykle mot kjøreretning.
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når envegskjøring ble innført. Den dato skilt ble "avduket".
+      codelist: null
+    attribute_count: 5
+  - object_type: Trafikkreguleringer
+    definition: Strekning hvor det er restriksjoner for motortrafikk eller gående og syklende.
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: trafikkreguleringer
+      attribute_name: trafikkreguleringer
+      type: «CodeList» TypeTrafikkreguleringer
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir eventuelle restriksjoner for motortrafikk, gående og syklende.
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: gjelderHverdagerULørdagFraKl
+      attribute_name: gjelderHverdagerULørdagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på hverdager unntatt lørdag fra angitt klokkeslett.
+      codelist: null
+    - name: gjelderHverdagerULørdagTilKl
+      attribute_name: gjelderHverdagerULørdagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på hverdager unntatt lørdag til angitt klokkeslett
+      codelist: null
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir eventuelle unntak for tidspunkt, kjøretøytyper, m.m.
+      codelist: null
+    - name: gjelderLørdagFraKl
+      attribute_name: gjelderLørdagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på lørdager fra angitt klokkeslett
+      codelist: null
+    - name: gjelderLørdagTilKl
+      attribute_name: gjelderLørdagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på lørdager til angitt klokkeslett
+      codelist: null
+    - name: gjelderSøndagFraKl
+      attribute_name: gjelderSøndagFraKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på søndager fra angitt klokkeslett
+      codelist: null
+    - name: gjelderSøndagTilKl
+      attribute_name: gjelderSøndagTilKl
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder på søndager til angitt klokkeslett
+      codelist: null
+    - name: gjelderUkedag
+      attribute_name: gjelderUkedag
+      type: «CodeList» GjelderUkedag
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Trafikkregulering gjelder kun angitt ukedag
+      codelist: null
+    - name: vedtaksnummer
+      attribute_name: vedtaksnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir vedtaksnummer.
+      codelist: null
+    - name: arkivnummer
+      attribute_name: arkivnummer
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Gir referanse til relevant sak i vegeiers arkivsystem.
+      codelist: null
+    - name: gyldigFraDato
+      attribute_name: gyldigFraDato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Dato for når trafikkregulering ble innført. Den dato skilt ble "avduket".
+      codelist: null
+    attribute_count: 13
+  - object_type: Vegsperring
+    definition: Angir at veg er fysisk sperret.
+    geometry_type: PUNKT
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: funksjon
+      attribute_name: funksjon
+      type: «codeList» Funksjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir hvilken funksjon sperringen har
+      codelist: null
+    - name: posisjon
+      attribute_name: posisjon
+      type: GM_Point(http://skjema.geonorge.no/SOSI/basistype/GM_Point)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Gir punkt som geometrisk representerer objektet.
+      codelist: null
+    optional_attributes:
+    - name: type
+      attribute_name: type
+      type: «codeList» TypeVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvilken type sperring det er tale om
+      codelist: null
+    - name: StengtFraDato
+      attribute_name: StengtFraDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Del av tidsrombeskrivelse for når vegsperring er stengt. Benyttes om stengning ikke gjelder hele året.
+      codelist: null
+    - name: StengtTilDato
+      attribute_name: StengtTilDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Del av tidsrombeskrivelse for når vegsperring er stengt. Benyttes om stengning ikke gjelder hele året.
+      codelist: null
+    - name: StengtFraKlokkeslett
+      attribute_name: StengtFraKlokkeslett
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Del av tidsrombeskrivelse for når vegsperring er stengt. Benyttes om stengning ikke gjelder hele døgnet.
+      codelist: null
+    - name: merknad
+      attribute_name: merknad
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Opplysning om spesielle forhold knyttet til fysisk sperring.
+      codelist: null
+    - name: StengtTilKlokkeslett
+      attribute_name: StengtTilKlokkeslett
+      type: Time(http://skjema.geonorge.no/SOSI/basistype/Time)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Del av tidsrombeskrivelse for når vegsperring er stengt. Benyttes om stengning ikke gjelder hele døgnet.
+      codelist: null
+    - name: StengtUkedag
+      attribute_name: StengtUkedag
+      type: «codeList» SengtUkedag
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Del av tidsrombeskrivelse for når vegsperring er stengt. Benyttes om stengning ikke gjelder alle ukedager.
+      codelist: null
+    - name: eier
+      attribute_name: eier
+      type: «codeList» EierVegsperring
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvem som er eier av vegobjektet
+      codelist: null
+    attribute_count: 10
+  - object_type: VærutsattVeg
+    definition: Vegstrekning som er spesielt utsatt for uvær, og av den grunn kan ha begrenset åpningstid. Strekning defineres
+      fra stengningspunkt
+    geometry_type: KURVE
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: ekstraVintervedlikehold
+      attribute_name: ekstraVintervedlikehold
+      type: «codeList» EkstraVintervedlikehold
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angir om denne vegstrekningen krever ekstra vintervedlikehold utover standard vinterdrift. Informasjon
+      codelist: null
+    - name: senterlinje
+      attribute_name: senterlinje
+      type: GM_Curve(http://skjema.geonorge.no/SOSI/basistype/GM_Curve)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Angivelse av objektets posisjon
+      codelist: null
+    optional_attributes:
+    - name: fjellovergang
+      attribute_name: fjellovergang
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir om værutsatt veg regnes som en offisiell fjellovergang. Fjelloverganger er lengre strekninger utenfor
+      codelist: null
+    - name: navn
+      attribute_name: navn
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir navn på værutsatt veg/fjellovergang.
+      codelist: null
+    - name: sted_Fra
+      attribute_name: sted_Fra
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Offisielt stedsnavn der strekning starter. Her benyttes stedsnavn på tettsted/område. Det skal benyttes
+        stedsnavn
+      codelist: null
+    - name: sted_Til
+      attribute_name: sted_Til
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Offisielt stedsnavn der strekning slutter. Her benyttes stedsnavn på tettsted/område. Det skal benyttes
+        stedsnavn
+      codelist: null
+    - name: stedLokalt_Fra
+      attribute_name: stedLokalt_Fra
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Lokalt stedsnavn der strekning starter. Her benyttes stedsnavn der bom er plassert. Det skal benyttes stedsnavn
+      codelist: null
+    - name: stedLokalt_Til
+      attribute_name: stedLokalt_Til
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Lokalt stedsnavn der strekning slutter. Her benyttes stedsnavn der bom er plassert. Det skal benyttes stedsnavn
+      codelist: null
+    - name: ansvarligVTS
+      attribute_name: ansvarligVTS
+      type: «CodeList» AnsvarligVTS
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir ansvarlig vegtrafikksentral for strekningen.
+      codelist: null
+    - name: stedligBeredskap
+      attribute_name: stedligBeredskap
+      type: Boolean(http://skjema.geonorge.no/SOSI/basistype/Boolean)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir om det er stedlig beredskap knyttet til vegstrekningen, dvs. at brøytemannskap bor på brøytestasjon
+      codelist: null
+    - name: snødybde
+      attribute_name: snødybde
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir snødybde ved åpning av vegstrekningen. Gjelder høyfjellsstrekninger.
+      codelist: null
+    - name: antallStengteDøgn
+      attribute_name: antallStengteDøgn
+      type: Integer(http://skjema.geonorge.no/SOSI/basistype/Integer)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir hvor mange døgn pr år vegstrekningen normalt er stengt.
+      codelist: null
+    - name: vinterstengt_FraDato
+      attribute_name: vinterstengt_FraDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når vinterstengning starter et normalår.
+      codelist: null
+    - name: vinterstengt_TilDato
+      attribute_name: vinterstengt_TilDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når vinterstengning opphører i et normalår.
+      codelist: null
+    - name: nattestengt_FraDato
+      attribute_name: nattestengt_FraDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når nattestengning starter i et normalår.
+      codelist: null
+    - name: nattestengt_TilDato
+      attribute_name: nattestengt_TilDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når nattestengning avsluttes i et normalår.
+      codelist: null
+    - name: avgrensaVinterdriftFraDato
+      attribute_name: avgrensaVinterdriftFraDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når avgrensa vinterdrift starter et normalår. Med avgrenset vinterdrift menes at
+        det er
+      codelist: null
+    - name: avgrensaVinterdriftTilDato
+      attribute_name: avgrensaVinterdriftTilDato
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Angir dato (mmdd) for når avgrensa vinterdrift avsluttes et normalår. Med avgrenset vinterdrift menes at
+        det er
+      codelist: null
+    - name: tilleggsinformasjon
+      attribute_name: tilleggsinformasjon
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Supplerende informasjon om vegobjektet som ikke framkommer direkte av andre egenskapstyper, f.eks. mer
+      codelist: null
+    attribute_count: 19
+  - object_type: SOSI_Fellesegenskaper
+    definition: abstrakt objekttype som bærer sentrale egenskaper som er anbefalt for bruk i produktspesifikasjoner.
+    geometry_type: UNKNOWN
+    supertype: null
+    mandatory_attributes:
+    - name: identifikasjon
+      attribute_name: identifikasjon
+      type: «dataType» Identifikasjon
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: unik identifikasjon av et objekt
+      codelist: null
+    optional_attributes:
+    - name: oppdateringsdato
+      attribute_name: oppdateringsdato
+      type: DateTime(http://skjema.geonorge.no/SOSI/basistype/DateTime)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: dato for siste endring på objektetdataene
+      codelist: null
+    - name: nvdbId
+      attribute_name: nvdbId
+      type: CharacterString(http://skjema.geonorge.no/SOSI/basistype/CharacterString)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: Intern identifikasjon for objektet i NVDB
+      codelist: null
+    attribute_count: 3
+  - object_type: SOSI_Objekt_veglenke
+    definition: abstrakt objekttype som bærer en rekke egenskaper som er fagområde-uavhengige og kan benyttes for alle objekttyper
+    geometry_type: UNKNOWN
+    supertype: Fellesegenskaper::«FeatureType» SOSI_Fellesegenskaper
+    mandatory_attributes:
+    - name: kommunenummer
+      attribute_name: kommunenummer
+      type: «codeList» Kommunenummer
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[1..1]'
+      description: Kommunenummer.
+      codelist: null
+    optional_attributes:
+    - name: datafangstdato
+      attribute_name: datafangstdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: dato når objektet siste gang ble registrert/observert/målt i terrenget
+      codelist: null
+    - name: verifiseringsdato
+      attribute_name: verifiseringsdato
+      type: Date(http://skjema.geonorge.no/SOSI/basistype/Date)
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: dato når dataene er fastslått å være i samsvar med virkeligheten
+      codelist: null
+    - name: kvalitet
+      attribute_name: kvalitet
+      type: «dataType» Posisjonskvalitet
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: beskrivelse av kvaliteten på stedfestingen
+      codelist: null
+    - name: medium
+      attribute_name: medium
+      type: «CodeList» Medium
+      sosi_datatype: null
+      sosi_length: null
+      multiplicity: '[0..1]'
+      description: objektets beliggenhet i forhold til jordoverflaten
+      codelist: null
+    attribute_count: 5
+  object_count: 21
+statistics:
+  total_objects: 164
+  total_mandatory_attributes: 264
+  total_optional_attributes: 221
+  most_attributes: GjennomkjøringForbudt (NVDB_Vegnett_pluss_1) with 19 attributes
+  common_patterns:
+  - Most objects inherit from Fellesegenskaper or KvalitetPåkrevd/KvalitetOpsjonell
+  - 'Common mandatory: datafangstdato, kvalitet.datafangstmetode, identifikasjon'
+  - 'Geometry types: PUNKT, KURVE, FLATE, TEKST'
+  - Code lists used extensively for enumerated values

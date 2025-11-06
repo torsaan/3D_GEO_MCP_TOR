@@ -1,0 +1,1118 @@
+metadata:
+  analysis_date: "2025-11-04"
+  specifications_analyzed: 10
+  total_rules_extracted: 127
+  extraction_source:
+    - "FKB_GENRELL_DEL_5.md"
+    - "FKB_BYGNING_5.1.md"
+    - "FKB_BygningAnlegg.md"
+    - "FKB_VEG_5.md"
+    - "FKB_VANN_5.md"
+    - "FKB_Traktorvegsti_5.md"
+    - "FKB_LEDNIGN.md"
+    - "FKB_LEdningVA.md"
+    - "FKB_HOYDE.md"
+    - "NVDB_Vegnett_pluss_1.md"
+  notes: "Extracted from FKB 5.0/5.1 specifications. Rules apply to geometric validation, topology checks, and quality control."
+
+# ============================================================================
+# COMMON GEOMETRIC RULES (Apply to all FKB objects)
+# ============================================================================
+
+common_geometric_rules:
+  description: "Universal rules from FKB-Generell del applying to all FKB objects"
+
+  rules:
+    - rule_id: "GR-001"
+      rule_type: "geometry_type_constraint"
+      description: "FKB skal kun bruke enkle geometrityper: GM_Point (.PUNKT), GM_Curve (.KURVE), GM_Surface (.FLATE)"
+      constraint: "NO multipoint, multicurve, multisurface geometries allowed"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "7.1.1 Geometrityper"
+      validation_method: "Check geometry type is one of: Point, LineString, Polygon"
+
+    - rule_id: "GR-002"
+      rule_type: "coordinate_precision"
+      description: "Koordinater skal ha presisjon bedre enn 5mm ved transformasjon"
+      threshold: "0.005 m"
+      applies_when: "During coordinate system transformations"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "Vedlegg B: Romlige referansesystem"
+
+    - rule_id: "GR-003"
+      rule_type: "line_simplification"
+      description: "Pilhøyde (maksimal tverrfeilavvik) ved linjeforenkling skal ikke overstige nøyaktighetskravet"
+      formula: "max_perpendicular_distance <= NØYAKTIGHET"
+      constraint: "Douglas-Peucker simplification tolerance = NØYAKTIGHET value"
+      examples:
+        - "FKB-A (10cm nøyaktighet): max avvik = 10cm"
+        - "FKB-B (20cm nøyaktighet): max avvik = 20cm"
+      source: "resources/fkb_rules.md"
+      section: "3.4 Curve Precision (Pilhøyde Constraint)"
+      validation_method: "Calculate perpendicular distance from simplified line to original vertices"
+
+    - rule_id: "GR-004"
+      rule_type: "closure_requirement"
+      description: "Flateobjekter (polygoner) skal alltid være lukkede"
+      constraint: "First and last coordinate must be identical"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "7.1.4 Flategeometri"
+      validation_method: "Check start_point == end_point for polygon boundaries"
+
+    - rule_id: "GR-005"
+      rule_type: "self_intersection"
+      description: "Kurver og flater skal ikke ha egenkryssinger"
+      constraint: "Geometries must be simple (no self-intersections)"
+      quality_measure: "Antall ulovlige egenkryssinger"
+      tolerance: 0
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+      validation_method: "Use ST_IsSimple() or equivalent topology validation"
+
+    - rule_id: "GR-006"
+      rule_type: "self_overlap"
+      description: "Kurver skal ikke ha egenoverlappinger"
+      constraint: "Line segments cannot overlap themselves"
+      quality_measure: "Antall ulovlige egenoverlappinger"
+      tolerance: 0
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+      validation_method: "Check for overlapping line segments in same feature"
+
+# ============================================================================
+# ACCURACY AND QUALITY REQUIREMENTS
+# ============================================================================
+
+accuracy_requirements:
+  description: "Stedfestingsnøyaktighet (positioning accuracy) requirements per FKB standard"
+
+  standards:
+    FKB-A:
+      description: "Høyeste nøyaktighet - tett bebygde områder"
+      object_classes:
+        class_1:
+          name: "Svært veldefinerte detaljer"
+          horizontal_accuracy:
+            systematic_error: "3 cm"
+            standard_deviation: "10 cm"
+          vertical_accuracy:
+            systematic_error: "3 cm"
+            standard_deviation: "10 cm"
+          examples: "Bygningskanter, fortauskanter, murer"
+
+        class_2:
+          name: "Veldefinerte detaljer"
+          horizontal_accuracy:
+            systematic_error: "5 cm"
+            standard_deviation: "15 cm"
+          vertical_accuracy:
+            systematic_error: "5 cm"
+            standard_deviation: "15 cm"
+          examples: "Vegkanter, grøftekanter"
+
+        class_3:
+          name: "Uskarpe detaljer"
+          horizontal_accuracy:
+            systematic_error: "10 cm"
+            standard_deviation: "35 cm"
+          vertical_accuracy:
+            systematic_error: "8 cm"
+            standard_deviation: "25 cm"
+          examples: "Skogkant, myrgrense"
+
+        class_4:
+          name: "Diffuse detaljer"
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "55 cm"
+          vertical_accuracy:
+            systematic_error: "12 cm"
+            standard_deviation: "40 cm"
+          examples: "Meget uskarpe naturlige grenser"
+
+      gross_errors:
+        threshold: "3 × standard_deviation"
+        max_percentage: "1%"
+        description: "Avvik større enn 3 ganger standardavviket regnes som grove feil"
+
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.3 Krav til stedfestingsnøyaktighet"
+
+    FKB-B:
+      description: "God nøyaktighet - spredt bebyggelse"
+      object_classes:
+        class_1:
+          horizontal_accuracy:
+            systematic_error: "5 cm"
+            standard_deviation: "15 cm"
+          vertical_accuracy:
+            systematic_error: "5 cm"
+            standard_deviation: "15 cm"
+        class_2:
+          horizontal_accuracy:
+            systematic_error: "6 cm"
+            standard_deviation: "20 cm"
+          vertical_accuracy:
+            systematic_error: "6 cm"
+            standard_deviation: "20 cm"
+        class_3:
+          horizontal_accuracy:
+            systematic_error: "10 cm"
+            standard_deviation: "35 cm"
+          vertical_accuracy:
+            systematic_error: "10 cm"
+            standard_deviation: "35 cm"
+        class_4:
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "55 cm"
+          vertical_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "50 cm"
+
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.3 Krav til stedfestingsnøyaktighet"
+
+    FKB-C:
+      description: "Moderat nøyaktighet - landsbygd"
+      object_classes:
+        class_1:
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "48 cm"
+          vertical_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "48 cm"
+        class_2:
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "55 cm"
+          vertical_accuracy:
+            systematic_error: "20 cm"
+            standard_deviation: "70 cm"
+        class_3:
+          horizontal_accuracy:
+            systematic_error: "20 cm"
+            standard_deviation: "70 cm"
+          vertical_accuracy:
+            systematic_error: "25 cm"
+            standard_deviation: "90 cm"
+        class_4:
+          horizontal_accuracy:
+            systematic_error: "30 cm"
+            standard_deviation: "100 cm"
+          vertical_accuracy:
+            systematic_error: "40 cm"
+            standard_deviation: "150 cm"
+
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.3 Krav til stedfestingsnøyaktighet"
+
+    FKB-D:
+      description: "Lavere nøyaktighet - utmark/fjellområder"
+      object_classes:
+        class_1:
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "48 cm"
+          vertical_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "48 cm"
+        class_2:
+          horizontal_accuracy:
+            systematic_error: "15 cm"
+            standard_deviation: "55 cm"
+          vertical_accuracy:
+            systematic_error: "20 cm"
+            standard_deviation: "70 cm"
+        class_3:
+          horizontal_accuracy:
+            systematic_error: "20 cm"
+            standard_deviation: "70 cm"
+          vertical_accuracy:
+            systematic_error: "25 cm"
+            standard_deviation: "90 cm"
+        class_4:
+          horizontal_accuracy:
+            systematic_error: "30 cm"
+            standard_deviation: "100 cm"
+          vertical_accuracy:
+            systematic_error: "40 cm"
+            standard_deviation: "150 cm"
+
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.3 Krav til stedfestingsnøyaktighet"
+
+# ============================================================================
+# TOPOLOGY PATTERNS AND RULES
+# ============================================================================
+
+topology_patterns:
+  description: "Common topology patterns used across FKB specifications"
+
+  patterns:
+    - pattern_name: "Wholly-Owned Geometry (Heleid geometri)"
+      description: "Flateobjekt har egen avgrensning som ikke deles med andre objekter"
+      used_by:
+        - "Bygning (når flategeometri brukes)"
+        - "Bru"
+        - "SkråForstøtningsmur"
+        - "Brønn"
+        - "Industriområde"
+      rules:
+        - "Avgrensningsobjektet har objekttype 'Flateavgrensning'"
+        - "Avgrensningen har ingen IDENT (lokalId)"
+        - "Flateobjektet refererer avgrensningen med .REF"
+        - "Avgrensningen brukes kun av ett flateobjekt"
+      sosi_structure: |
+        .KURVE 1001:
+        ..OBJTYPE Flateavgrensning
+        ..NØH [coordinates forming closed polygon]
+
+        .FLATE 2001:
+        ..OBJTYPE [ObjectType]
+        ..REF :1001
+        ..NØH [representative point inside polygon]
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "7.1.4 Flategeometri - Type 1"
+
+    - pattern_name: "Shared Geometry (Delt geometri)"
+      description: "Flateobjekt avgrenses av egne avgrensningsobjekter som kan deles mellom flere flater"
+      used_by:
+        - "Bygning (hovedregel med Bygningsavgrensning)"
+        - "Elv"
+        - "VegKjørende"
+        - "Fortau"
+        - "Parkeringsområde"
+      rules:
+        - "Avgrensningsobjektene har egen objekttype (f.eks. Bygningsavgrensning, Vegdekkekant)"
+        - "Avgrensningsobjektene har full IDENT (lokalId + navnerom)"
+        - "Flateobjektet vet hvilke avgrensningsobjekter som utgjør avgrensningen"
+        - "Rekkefølge og retning på avgrensningsobjekter er definert"
+        - "Flere flateobjekter kan dele samme avgrensningsobjekt"
+        - "Flateobjektets område-geometri skal være lik summen av geometriene til assosierte avgrensningsobjekter"
+      sosi_structure: |
+        .KURVE 3001:
+        ..OBJTYPE [BoundaryObjectType]
+        ..IDENT ...LOKALID [uuid]
+        ..NØH [coordinates]
+
+        .KURVE 3002:
+        ..OBJTYPE [BoundaryObjectType]
+        ..IDENT ...LOKALID [uuid]
+        ..NØH [coordinates]
+
+        .FLATE 4001:
+        ..OBJTYPE [ObjectType]
+        ..REF :3001 :3002 [-:3003]
+        ..NØH [representative point]
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "7.1.4 Flategeometri - Type 2"
+      topology_constraint: "Grensegeometrien skal matche flatens avgrensning eksakt"
+
+    - pattern_name: "Network Connectivity"
+      description: "Linjeobjekter som danner sammenheng network (vegnett, ledningsnett)"
+      used_by:
+        - "Veglenke (Elveg)"
+        - "Ledningssegment"
+        - "Traktorveg"
+        - "Sti"
+      rules:
+        - "Linjeobjekter skal knytte seg sammen i endepunkter (noder)"
+        - "Snap-toleranse avhenger av nøyaktighetsklasse"
+        - "Ingen løse ender uten at det er logisk (veg-ende, ledning avsluttes)"
+        - "Konnektivitet skal bevares på tvers av medium (over/under terrenget)"
+      validation_rules:
+        - quality_measure: "Antall ulovlige løse ender"
+        - quality_measure: "Antall feil i lenkekryssing"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+
+    - pattern_name: "Gap Filling with Fictional Boundaries"
+      description: "Avgrensning av arealer med fiktive grenser der fysisk grense mangler"
+      used_by:
+        - "VegKjørende"
+        - "VegGåendeOgSyklende"
+        - "Fortau"
+      rules:
+        - "Bruk objekttype VegFiktivGrense for å lukke polygon"
+        - "Fiktiv grense brukes ved prosjektgrenser eller der avgrensning er uklar"
+        - "Fiktive grenser skal ikke krysse fysiske grenseobjekter"
+      sosi_example: |
+        .KURVE 5001:
+        ..OBJTYPE VegFiktivGrense
+        ..NØ [coordinates connecting open ends]
+
+        .FLATE 5100:
+        ..OBJTYPE VegKjørende
+        ..REF :5001 :5002 :5003
+      source: "resources/fkb_rules.md"
+      section: "3.1 Polygon Creation Methods"
+
+    - pattern_name: "Full Coverage (Fulldekkende flater)"
+      description: "Flater som til sammen skal dekke et helt område uten gap eller overlapp"
+      used_by:
+        - "Arealbruk-objekter"
+        - "Arealressurs-objekter"
+      rules:
+        - "Ingen gap mellom tilstøtende flater"
+        - "Ingen overlapp mellom tilstøtende flater"
+        - "Felles grenser mellom flater skal være identiske (delt geometri)"
+        - "Hele området skal være dekket"
+      quality_measure:
+        - "Prosentandel feil på fulldekkende flater"
+        - tolerance: 0
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+      validation_method: "Check for gaps and overlaps in polygon coverage"
+
+# ============================================================================
+# SPATIAL CONSTRAINTS
+# ============================================================================
+
+spatial_constraints:
+  description: "Distance, overlap, gap, and snap tolerances"
+
+  constraints:
+    - constraint_id: "SC-001"
+      constraint_type: "snap_distance"
+      description: "Noder i nettverk skal snappe sammen innenfor nøyaktighetstoleransen"
+      threshold: "Depends on accuracy class"
+      values:
+        FKB-A: "10 cm"
+        FKB-B: "20 cm"
+        FKB-C: "50 cm"
+        FKB-D: "50 cm"
+      applies_when: "Creating network connectivity (roads, utilities)"
+      applies_to:
+        - "Veglenke endpoints"
+        - "Ledningssegment endpoints"
+        - "Traktorveg endpoints"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.3 Krav til stedfestingsnøyaktighet"
+      validation_method: "Check distance between endpoints of connected features"
+
+    - constraint_id: "SC-002"
+      constraint_type: "gap_tolerance"
+      description: "Gap mellom tilstøtende flater skal ikke overstige nøyaktighetstoleransen"
+      threshold: "Equal to accuracy class standard deviation"
+      values:
+        FKB-A: "10-55 cm (avhenger av objektklasse)"
+        FKB-B: "15-55 cm"
+        FKB-C: "48-100 cm"
+      applies_when: "Adjacent polygons in coverage datasets"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+
+    - constraint_id: "SC-003"
+      constraint_type: "overlap_prohibition"
+      description: "Overlapp mellom flater av samme type er ikke tillatt"
+      threshold: "0"
+      applies_when: "Same object type polygons"
+      exceptions:
+        - "Bygninger kan overlappe hvis de ligger på ulike medium (over/under bakken)"
+        - "Veger kan krysse på forskjellige nivåer (bro/tunnel)"
+      validation_method: "Check for polygon overlaps with same OBJTYPE and same MEDIUM"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer"
+
+    - constraint_id: "SC-004"
+      constraint_type: "minimum_polygon_size"
+      description: "Småpolygoner under minste areal er ikke tillatt"
+      threshold: "Varies by object type"
+      examples:
+        - object_type: "Brodekke"
+          minimum_area: "10 m²"
+          source: "FKB-Punkysky.md - Bridge classification"
+        - object_type: "Bygning"
+          minimum_area: "Defined per specification"
+          notes: "Small buildings may be represented as point geometry instead"
+      quality_measure: "Antall ulovlige småpolygoner"
+      applies_when: "Polygon creation and validation"
+      source: "FKB_GENRELL_DEL_5.md"
+      section: "8.2 Kvalitetselementer - Topologisk konsistens"
+
+    - constraint_id: "SC-005"
+      constraint_type: "minimum_line_length"
+      description: "Linjer kortere enn minste lengde kan være ugyldige"
+      threshold: "Typically 2-3 times accuracy class standard deviation"
+      notes: "Very short line segments may indicate topology errors or excessive detail"
+      validation_method: "Flag lines shorter than threshold for manual review"
+      source: "General topology best practices"
+
+    - constraint_id: "SC-006"
+      constraint_type: "angular_constraint"
+      description: "Minimum vinkel mellom linjesegmenter for å unngå kunstige knekkpunkter"
+      threshold: "Typically > 5 degrees"
+      applies_when: "Line simplification and quality control"
+      notes: "Very sharp angles may indicate topology errors or numerical precision issues"
+      source: "General topology best practices"
+
+# ============================================================================
+# OBJECT-SPECIFIC GEOMETRIC RULES
+# ============================================================================
+
+object_specific_rules:
+
+  # --------------------------------------------------------------------------
+  # FKB-BYGNING
+  # --------------------------------------------------------------------------
+
+  - object_type: "Bygning"
+    source_specification: "FKB_BYGNING_5.1.md"
+    geometry_type: "PUNKT eller FLATE"
+
+    geometry_constraints:
+      - rule: "Bygning skal alltid ha punktgeometri (påkrevd)"
+      - rule: "Bygning kan også ha flategeometri (opsjonell)"
+      - rule: "Hvis flategeometri finnes, skal punktgeometri ligge innenfor flaten"
+      - rule: "Flategeometri bruker objekttype 'Bygningsavgrensning' for avgrensning"
+      - rule: "Bygningsavgrensning skal danne lukket polygon"
+
+    topology_rules:
+      - rule_type: "shared_boundary"
+        description: "Bygninger kan dele avgrensningslinje ved sammenbyggede bygg"
+        constraint: "Samme Bygningsavgrensning-objekt refereres fra begge bygninger"
+      - rule_type: "no_overlap"
+        description: "Bygninger skal ikke overlappe hverandre (samme medium)"
+        exception: "Bygninger på forskjellige nivåer (MEDIUM L/U) kan overlappe i grunnriss"
+
+    spatial_constraints:
+      - constraint_type: "minimum_area"
+        description: "Små bygninger kan representeres som kun punkt"
+        notes: "Arealbegrensning definert i lokal praksis"
+      - constraint_type: "representative_point"
+        description: "Punktgeometri skal plasseres sentralt i bygningen"
+        validation_method: "Point should be inside polygon boundary if flategeometri exists"
+
+    accuracy_requirements:
+      - requirement: "Bygningskanter er nøyaktighetsklasse 1 (svært veldefinerte)"
+        FKB-A: "3 cm / 10 cm (systematisk / standardavvik)"
+        FKB-B: "5 cm / 15 cm"
+        FKB-C: "15 cm / 48 cm"
+        FKB-D: "15 cm / 48 cm"
+
+    special_cases:
+      - case: "Bygning i bygning"
+        rule: "Separate bygningsobjekter hvis funksjonelt atskilt"
+      - case: "Bygning på bro/plattform"
+        rule: "Bruk MEDIUM=L for å indikere at bygning er over terrenget"
+
+    source_section: "FKB-Bygning produktspesifikasjon"
+
+  # --------------------------------------------------------------------------
+  # FKB-BYGNINGANLEGG
+  # --------------------------------------------------------------------------
+
+  - object_type: "Bygningsanlegg-generelt"
+    source_specification: "FKB_BygningAnlegg.md"
+    description: "Samlenavn for konstruerte anlegg og strukturer"
+
+    sub_objects:
+      - object_type: "Bru"
+        geometry_type: "FLATE"
+        geometry_constraints:
+          - "Bruker heleid geometri (Flateavgrensning)"
+          - "Minimum areal 10 m²"
+          - "Skal inkludere hele bruoverbyggingen"
+        topology_rules:
+          - "Bru over veg/elv: Bruk MEDIUM=L"
+          - "Vegdekkekant under bru får MEDIUM=U hvis i tunnel-aktig struktur"
+        accuracy: "Klasse 1-2 (veldefinerte kanter)"
+
+      - object_type: "SkråForstøtningsmur"
+        geometry_type: "FLATE"
+        geometry_constraints:
+          - "Heleid geometri"
+          - "Representerer skrå mur/støttemur"
+          - "HREF=fot (målt ved foten av muren)"
+        topology_rules:
+          - "Kan dele grense med andre terrengformasjoner"
+          - "Skal ikke overlappe andre murer"
+
+      - object_type: "Konstruksjon"
+        geometry_type: "PUNKT eller KURVE eller FLATE"
+        geometry_constraints:
+          - "Geometritype avhenger av størrelse og form"
+          - "Store konstruksjoner: FLATE"
+          - "Langstrakte konstruksjoner: KURVE"
+          - "Punktformige konstruksjoner: PUNKT"
+
+    source_section: "FKB-BygningAnlegg produktspesifikasjon"
+
+  # --------------------------------------------------------------------------
+  # FKB-VEG
+  # --------------------------------------------------------------------------
+
+  - object_type: "VegKjørende"
+    source_specification: "FKB_VEG_5.md"
+    geometry_type: "FLATE"
+
+    geometry_constraints:
+      - "Bruker delt geometri (shared boundaries)"
+      - "Avgrenses av Vegdekkekant, Kjørebanekant, eller Vegskulderkant"
+      - "Må være lukket polygon - bruk VegFiktivGrense hvis nødvendig"
+      - "Skal følge faktisk kjørbar overflate"
+
+    topology_rules:
+      - rule_type: "shared_boundary"
+        description: "Deler Vegdekkekant med tilstøtende flater"
+        related_objects:
+          - "Fortau"
+          - "VegGåendeOgSyklende"
+          - "Parkeringsområde"
+      - rule_type: "closure_with_fictional"
+        description: "Åpne ender lukkes med VegFiktivGrense"
+        constraint: "VegFiktivGrense brukes ved prosjektgrenser"
+      - rule_type: "medium_separation"
+        description: "Veg på forskjellige nivåer separeres med MEDIUM attributt"
+        values:
+          - "MEDIUM=L for veg på bro/viadukt"
+          - "MEDIUM=U for veg i tunnel"
+          - "Ingen MEDIUM for veg på terrengnivå"
+
+    spatial_constraints:
+      - constraint_type: "minimum_width"
+        description: "Vegkjørende skal ha realistisk bredde"
+        typical_values: "2.5m - 20m avhengig av vegtype"
+      - constraint_type: "no_gap"
+        description: "Vegkjørende flater skal dekke hele kjørebanen"
+        tolerance: "Gap <= accuracy tolerance"
+
+    accuracy_requirements:
+      - requirement: "Vegdekkekant er klasse 2 (veldefinert)"
+        FKB-A: "5 cm / 15 cm"
+        FKB-B: "6 cm / 20 cm"
+
+    special_cases:
+      - case: "Veg i tunnel"
+        rule: "Alle vegobjekter i tunnel må ha MEDIUM=U"
+        objects_required:
+          - "VegKjørende"
+          - "Vegdekkekant"
+          - "Vegsenterlinje (hvis aktuelt)"
+      - case: "Veg på bro"
+        rule: "Alle vegobjekter på bro må ha MEDIUM=L"
+      - case: "Fictional boundary at project edge"
+        rule: "Bruk VegFiktivGrense for å lukke VegKjørende ved kartgrense"
+
+  - object_type: "Vegdekkekant"
+    source_specification: "FKB_VEG_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Linjegeometri som følger kant av vegdekke"
+      - "Skal være kontinuerlig langs vegstrekning"
+      - "Brukes som avgrensning for VegKjørende og andre vegflater"
+
+    topology_rules:
+      - rule_type: "shared_boundary"
+        description: "Fungerer som felles grense mellom vegflater"
+        used_by:
+          - "VegKjørende"
+          - "Fortau"
+          - "VegGåendeOgSyklende"
+      - rule_type: "connectivity"
+        description: "Skal knytte seg sammen ved kryss og avkjørsler"
+        constraint: "Endpoint-to-endpoint connection within snap tolerance"
+
+    accuracy_requirements:
+      - requirement: "Klasse 2 (veldefinert kant)"
+        FKB-A: "5 cm / 15 cm"
+        FKB-B: "6 cm / 20 cm"
+
+    special_cases:
+      - case: "Vegdekkekant på bro"
+        rule: "MEDIUM=L"
+      - case: "Vegdekkekant i tunnel"
+        rule: "MEDIUM=U"
+
+  - object_type: "Kjørebanekant"
+    source_specification: "FKB_VEG_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Markerer kant mellom kjørebane og skulder"
+      - "Brukes primært på større veger med skulder"
+
+    topology_rules:
+      - rule_type: "connectivity"
+        description: "Skal være kontinuerlig langs vegstrekning med skulder"
+
+    data_collection_rules:
+      - requirement: "Påkrevd for Europaveger, Riksveger, Fylkesveger"
+      - requirement: "Ikke påkrevd for kommunale veger og private veger"
+      - source: "resources/fkb_rules.md"
+      - section: "4.3 Road Edge Requirements"
+
+  - object_type: "Vegskulderkant"
+    source_specification: "FKB_VEG_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Markerer ytterste kant av vegsulder"
+      - "Brukes sammen med Kjørebanekant"
+
+    data_collection_rules:
+      - requirement: "Påkrevd for Europaveger, Riksveger, Fylkesveger"
+      - requirement: "Ikke påkrevd for kommunale veger og private veger"
+
+  - object_type: "VegFiktivGrense"
+    source_specification: "FKB_VEG_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Lukker åpne polygoner der fysisk grense mangler"
+      - "Skal kun brukes ved prosjektgrenser eller uklar avgrensning"
+
+    topology_rules:
+      - rule_type: "gap_filling"
+        description: "Forbinder åpne ender av Vegdekkekant for å danne lukket polygon"
+        constraint: "Skal ikke krysse eksisterende fysiske grenseobjekter"
+
+    usage_rules:
+      - "Brukes primært for VegKjørende og VegGåendeOgSyklende"
+      - "Plassering skal være logisk og følge naturlig avgrensning"
+
+  # --------------------------------------------------------------------------
+  # FKB-VANN
+  # --------------------------------------------------------------------------
+
+  - object_type: "Elv"
+    source_specification: "FKB_VANN_5.md"
+    geometry_type: "KURVE eller FLATE"
+
+    geometry_constraints:
+      - "Smal elv (<2m bredde): KURVE (senterlinje)"
+      - "Bred elv (>=2m bredde): FLATE"
+      - "Flategeometri bruker delt geometri med Elvekant"
+
+    topology_rules:
+      - rule_type: "connectivity"
+        description: "Elvenett skal være sammenhengende"
+        constraint: "Elvesegmenter knytter seg sammen i endepunkter"
+      - rule_type: "flow_direction"
+        description: "Digitiseringsretning skal følge vannstrømmens retning"
+        validation_method: "Check elevation decreases along line direction"
+      - rule_type: "shared_boundary"
+        description: "Elvekant deles mellom elv og tilstøtende arealer"
+
+    spatial_constraints:
+      - constraint_type: "width_threshold"
+        threshold: "2 m"
+        description: "Elver smalere enn 2m representeres som kurve, bredere som flate"
+
+    accuracy_requirements:
+      - requirement: "Elvekant er klasse 2-3 (avhenger av synbarhet)"
+        FKB-A: "5-10 cm / 15-35 cm"
+
+  - object_type: "Innsjø"
+    source_specification: "FKB_VANN_5.md"
+    geometry_type: "FLATE"
+
+    geometry_constraints:
+      - "Bruker delt geometri med Innsjøkant"
+      - "Skal være lukket polygon"
+      - "Kan inneholde øyer (hull i polygon)"
+
+    topology_rules:
+      - rule_type: "shared_boundary"
+        description: "Innsjøkant deles med landområder rundt"
+      - rule_type: "islands"
+        description: "Øyer i innsjø representeres som hull (inner rings)"
+
+    spatial_constraints:
+      - constraint_type: "minimum_area"
+        description: "Svært små vannflater kan utelates eller representeres som punkt"
+
+  # --------------------------------------------------------------------------
+  # FKB-TRAKTORVEGSTI
+  # --------------------------------------------------------------------------
+
+  - object_type: "Traktorveg"
+    source_specification: "FKB_Traktorvegsti_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Senterlinje av traktorveg"
+      - "Følger virkelig trase på terrenget"
+
+    topology_rules:
+      - rule_type: "connectivity"
+        description: "Traktorvegnett skal være sammenhengende der fysisk sammenheng finnes"
+      - rule_type: "connection_to_road_network"
+        description: "Kan knytte seg til ordinært vegnett"
+
+    accuracy_requirements:
+      - requirement: "Klasse 2-3 (varierer med synbarhet)"
+        notes: "Traktorveger ofte i skog med dårligere synbarhet"
+
+  - object_type: "Sti"
+    source_specification: "FKB_Traktorvegsti_5.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Senterlinje av sti/gangveg"
+      - "Smalere og mindre befestet enn traktorveg"
+
+    topology_rules:
+      - rule_type: "connectivity"
+        description: "Stinett kan være sammenhengende"
+
+    accuracy_requirements:
+      - requirement: "Klasse 3-4 (ofte uskarpe grenser)"
+        notes: "Stier kan være vanskelig å se i vegetasjon"
+
+  # --------------------------------------------------------------------------
+  # FKB-LEDNING
+  # --------------------------------------------------------------------------
+
+  - object_type: "Ledning"
+    source_specification: "FKB_LEDNIGN.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Senterlinje av ledningssystem"
+      - "Kan være punkt hvis kun posisjon er relevant"
+
+    topology_rules:
+      - rule_type: "network_connectivity"
+        description: "Ledningssegmenter danner sammenhengende nettverk"
+        constraint: "Endpoints connect at nodes (kummer, koblingspunkter)"
+      - rule_type: "medium_handling"
+        description: "Ledninger over/under terrenget angis med MEDIUM"
+        values:
+          - "MEDIUM=U for nedgravde ledninger"
+          - "MEDIUM=L for luftspente ledninger"
+          - "Ingen MEDIUM for ledninger på terrengnivå"
+
+    spatial_constraints:
+      - constraint_type: "snap_distance"
+        description: "Ledningssegmenter skal snappe sammen ved koblinger"
+        threshold: "Avhenger av nøyaktighetsklasse"
+
+    accuracy_requirements:
+      - requirement: "Varierer fra klasse 1-4 avhengig av ledningstype og synbarhet"
+        notes: "Luftspente ledninger ofte bedre synbarhet enn nedgravde"
+
+  - object_type: "Mast"
+    source_specification: "FKB_LEDNIGN.md"
+    geometry_type: "PUNKT"
+
+    geometry_constraints:
+      - "Punktgeometri ved fot av mast"
+      - "HREF=fot (målt ved bunnen)"
+
+    topology_rules:
+      - rule_type: "connection_to_line"
+        description: "Mast kan ha assosiasjon til ledning den bærer"
+
+    accuracy_requirements:
+      - requirement: "Klasse 1-2 (veldefinert posisjon)"
+
+  # --------------------------------------------------------------------------
+  # FKB-LEDNINGVA (Vann og Avløp)
+  # --------------------------------------------------------------------------
+
+  - object_type: "LedningVA"
+    source_specification: "FKB_LEdningVA.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Senterlinje av VA-ledning"
+      - "Representerer rørledning for vann eller avløp"
+
+    topology_rules:
+      - rule_type: "network_connectivity"
+        description: "VA-ledninger danner sammenhengende nettverk"
+        constraint: "Knytter sammen kummer, pumpeanlegg, renseanlegg"
+      - rule_type: "underground"
+        description: "VA-ledninger er normalt nedgravde"
+        default_medium: "U"
+
+    accuracy_requirements:
+      - requirement: "Klasse 1-2 for nye ledninger (målt ved nedlegging)"
+        notes: "Eldre ledninger kan ha dårligere posisjonsnøyaktighet"
+
+  - object_type: "Kum"
+    source_specification: "FKB_LEdningVA.md"
+    geometry_type: "PUNKT"
+
+    geometry_constraints:
+      - "Punktgeometri ved sentrum av kum"
+      - "HREF=topp (lokk av kum)"
+
+    topology_rules:
+      - rule_type: "node_in_network"
+        description: "Kummer er noder i VA-nettverk"
+        constraint: "Ledningssegmenter møtes i kummer"
+
+    accuracy_requirements:
+      - requirement: "Klasse 1 (veldefinert posisjon)"
+        notes: "Kumlokk er klart synlig og lett å måle"
+
+  # --------------------------------------------------------------------------
+  # FKB-HØYDE (Terrengmodell)
+  # --------------------------------------------------------------------------
+
+  - object_type: "Høydekurve"
+    source_specification: "FKB_HOYDE.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "3D-kurve med konstant Z-verdi"
+      - "Kurven skal følge terrenget i angitt høyde"
+      - "Kurver skal ikke krysse hverandre (unntatt i helt spesielle terrengformer)"
+
+    topology_rules:
+      - rule_type: "no_intersection"
+        description: "Høydekurver skal normalt ikke krysse hverandre"
+        exception: "Overhengende terrengformer (sjeldent)"
+      - rule_type: "constant_elevation"
+        description: "Alle punkt på kurven skal ha samme Z-verdi"
+        tolerance: "Innenfor vertikal nøyaktighet"
+
+    spatial_constraints:
+      - constraint_type: "curve_interval"
+        description: "Avstand mellom kurver (ekvidistanse)"
+        typical_values:
+          - "FKB-A: 1m eller 2m"
+          - "FKB-B: 5m"
+          - "FKB-C: 5m eller 10m"
+          - "FKB-D: 10m eller 20m"
+
+    accuracy_requirements:
+      - requirement: "Vertikal nøyaktighet avhenger av FKB-klasse"
+        FKB-A: "5-15 cm standardavvik"
+        FKB-B: "5-20 cm standardavvik"
+        FKB-C: "15-70 cm standardavvik"
+        FKB-D: "15-70 cm standardavvik"
+
+    special_cases:
+      - case: "Hjelpekurver"
+        description: "Tynnere kurver mellom hovedkurver for detaljering"
+      - case: "Indekskurver"
+        description: "Tykkere kurver for hver 5. eller 10. kurve"
+
+  - object_type: "Terrengpunkt"
+    source_specification: "FKB_HOYDE.md"
+    geometry_type: "PUNKT"
+
+    geometry_constraints:
+      - "3D-punkt med XYZ-koordinater"
+      - "Representerer spesifikke høydepunkt i terrenget"
+
+    accuracy_requirements:
+      - requirement: "Samme vertikalnøyaktighet som høydekurver"
+
+    usage:
+      - "Topppunkt"
+      - "Bunnpunkt"
+      - "Markerte høydepunkt"
+
+  # --------------------------------------------------------------------------
+  # NVDB-VEGNETT (National Road Database Network)
+  # --------------------------------------------------------------------------
+
+  - object_type: "Veglenke"
+    source_specification: "NVDB_Vegnett_pluss_1.md"
+    geometry_type: "KURVE"
+
+    geometry_constraints:
+      - "Senterlinje av veg"
+      - "Representerer logisk veglenke i vegnettet"
+      - "Skal følge virkelig veg på terrenget"
+
+    topology_rules:
+      - rule_type: "network_connectivity"
+        description: "Veglenker danner sammenhengende vegnett"
+        constraint: "Veglenker møtes i vegkryss (noder)"
+      - rule_type: "no_duplicate_links"
+        description: "Skal ikke være duplikate veglenker mellom samme noder"
+      - rule_type: "medium_separation"
+        description: "Veglenker på forskjellige nivåer separeres med MEDIUM"
+
+    spatial_constraints:
+      - constraint_type: "snap_distance"
+        description: "Veglenker skal snappe sammen ved kryss"
+        threshold: "Innenfor nøyaktighetstoleranse"
+
+    accuracy_requirements:
+      - requirement: "Følger FKB-standard for området"
+        notes: "NVDB-geometri skal være konsistent med FKB-Veg"
+
+    special_cases:
+      - case: "Simplified attributes"
+        rule: "NVDB Veglenke krever kun: OBJTYPE, Typeveg, Datafangstdato, Kvalitet, Medium"
+        source: "resources/fkb_rules.md"
+        section: "4.4 Elveg Objects"
+
+# ============================================================================
+# VALIDATION RULES SUMMARY
+# ============================================================================
+
+validation_rules:
+  description: "Summary of validation rules for FKB data quality control"
+
+  categories:
+
+    - category: "geometry_validity"
+      rules:
+        - rule: "All geometries must be valid (simple, non-self-intersecting)"
+        - rule: "Polygons must be closed (first point == last point)"
+        - rule: "No duplicate consecutive points"
+        - rule: "Minimum 3 points for polygon, 2 for line"
+        - rule: "No degenerate geometries (zero-length lines, zero-area polygons)"
+      validation_tools:
+        - "ST_IsValid() - PostGIS"
+        - "is_valid - Shapely"
+        - "SOSI-kontroll tool"
+
+    - category: "topology"
+      rules:
+        - rule: "Network connectivity - endpoints snap within tolerance"
+        - rule: "Shared boundaries - identical coordinates for adjacent polygons"
+        - rule: "No illegal dangling ends (except logical terminators)"
+        - rule: "No illegal crossing of links (except at nodes)"
+        - rule: "Full coverage - no gaps or overlaps in coverage datasets"
+      quality_measures:
+        - "Antall ulovlige løse ender = 0"
+        - "Antall feil i lenkekryssing = 0"
+        - "Prosentandel feil på fulldekkende flater = 0"
+      validation_tools:
+        - "Topology checker - QGIS"
+        - "PostGIS topology functions"
+        - "FME topology validators"
+
+    - category: "spatial_relationships"
+      rules:
+        - rule: "Representative points inside polygons"
+        - rule: "Boundary objects form closed rings for polygons"
+        - rule: "Snap distance within accuracy tolerance"
+        - rule: "Gap/overlap within accuracy tolerance"
+        - rule: "Minimum polygon area check"
+        - rule: "Minimum line length check"
+      validation_methods:
+        - "ST_Contains(polygon, point)"
+        - "ST_Distance(endpoint1, endpoint2) <= tolerance"
+        - "ST_Area(polygon) >= minimum_area"
+
+    - category: "accuracy"
+      rules:
+        - rule: "Systematic error within specified limits"
+        - rule: "Standard deviation within specified limits"
+        - rule: "Gross errors < 1% (errors > 3×standard deviation)"
+        - rule: "Pilhøyde (perpendicular deviation) <= NØYAKTIGHET"
+      validation_methods:
+        - "Compare to independent control points"
+        - "Calculate RMS errors for horizontal and vertical"
+        - "Check line simplification deviation"
+      reference: "Geodatakvalitet standard and FKB control procedures"
+
+    - category: "attributes"
+      rules:
+        - rule: "All mandatory attributes present"
+        - rule: "Attribute values within defined code lists"
+        - rule: "KVALITET block complete (5 attributes)"
+        - rule: "MEDIUM attribute present for non-ground objects"
+        - rule: "HREF appropriate for object type"
+        - rule: "DATAFANGSTDATO in correct format"
+      validation_methods:
+        - "Schema validation (GML/SOSI)"
+        - "Code list validation against Geonorge registers"
+        - "SOSI-kontroll tool"
+
+# ============================================================================
+# SPECIAL NOTES
+# ============================================================================
+
+special_notes:
+  - note: "Medium Attribute Critical for Topology"
+    description: |
+      MEDIUM attributet (L=lufta, U=under, B=bygning) er kritisk for topologisk
+      korrekthet. Objekter med forskjellig MEDIUM kan overlappe i grunnriss uten
+      at det er feil. F.eks. veg på bro (MEDIUM=L) over veg i tunnel (MEDIUM=U).
+    importance: "HIGH"
+
+  - note: "Pilhøyde Rule Essential for Line Quality"
+    description: |
+      Pilhøyde-regelen (maksimal tverrfeilavvik ved forenkling) må alltid overholdes.
+      Dette sikrer at forenklede linjer ikke avviker mer fra virkeligheten enn
+      nøyaktighetstoleransen tillater.
+    formula: "max_perpendicular_distance <= NØYAKTIGHET"
+    importance: "CRITICAL"
+
+  - note: "Coordinate Precision Matters"
+    description: |
+      FKB-data har millimeterpresisjon. Koordinater lagres med 2 desimaler
+      (centimeter) i SOSI format (ENHET 0.01). Transformasjoner må bevare presisjon.
+    importance: "HIGH"
+
+  - note: "Topology Before Simplification"
+    description: |
+      Topologisk konsistens må bevares ved linjeforenkling. Bruk
+      preserve_topology=True i simplification algorithms. Shared boundaries må
+      forenkles identisk.
+    importance: "CRITICAL"
+
+  - note: "Quality Metadata Essential"
+    description: |
+      KVALITET-blokken er ikke bare metadata - den beskriver faktisk
+      datakvalitet og brukes til å bestemme om data kan brukes i
+      forskjellige sammenhenger. Nøyaktighet må settes riktig.
+    importance: "HIGH"
+
+  - note: "Network Connectivity Validation"
+    description: |
+      For vegnett, VA-nett og kraftnett er konnektivitet kritisk. Snap-toleranse
+      må være basert på faktisk nøyaktighet, ikke arbitrære verdier. Kontroller
+      alltid at noder faktisk knytter seg sammen.
+    importance: "CRITICAL"
+
+# ============================================================================
+# REFERENCES
+# ============================================================================
+
+references:
+  standards:
+    - name: "FKB Generell del 5.1"
+      url: "https://sosi.geonorge.no/standarder/FKB_generell_del/5.1"
+      description: "Overordnet standard for alle FKB-datasett"
+
+    - name: "Geodatakvalitet 1.0"
+      url: "https://register.geonorge.no/standarder/sosi/standarder-geografisk-informasjon/geodatakvalitet"
+      description: "Standard for beskrivelse og kontroll av geodatakvalitet"
+
+    - name: "SOSI Regler for UML-modellering 5.1"
+      url: "https://register.geonorge.no/standarder/sosi/del-1-generell-del/regler-for-uml-modellering"
+      description: "Modelleringsregler for SOSI-standarder"
+
+    - name: "Produksjon av basis geodata (PaBG)"
+      url: "https://register.geonorge.no/standarder/sosi/standarder-geografisk-informasjon/produksjon-av-basis-geodata"
+      description: "Standard for datafangst og produksjon av FKB"
+
+  tools:
+    - name: "SOSI-kontroll"
+      url: "https://www.kartverket.no/geodataarbeid/standardisering/veiledere-og-verktoy/sosi-kontroll"
+      description: "Valideringsverktøy for SOSI-data"
+
+    - name: "PostGIS Topology"
+      url: "https://postgis.net/docs/Topology.html"
+      description: "Topology validation and management in PostGIS"
+
+    - name: "QGIS Topology Checker"
+      url: "https://docs.qgis.org/latest/en/docs/user_manual/plugins/core_plugins/plugins_topology_checker.html"
+      description: "Topology validation plugin for QGIS"
+
+  documentation:
+    - name: "Geovekst veiledningsdokumentasjon"
+      url: "https://www.kartverket.no/geodataarbeid/geovekst/veiledningsmateriell-geovekst"
+      description: "Veiledning for FKB-kartlegging"
+
+    - name: "FKB produktspesifikasjoner"
+      url: "https://www.kartverket.no/geodataarbeid/geovekst/fkb-produktspesifikasjoner"
+      description: "Alle FKB produktspesifikasjoner"
+
+    - name: "Geonorge kodelister"
+      url: "https://register.geonorge.no/sosi-kodelister/fkb"
+      description: "Offisielle kodelister for FKB"

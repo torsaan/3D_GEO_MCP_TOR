@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "geo-mcp": {
+      "command": "conda",
+      "args": [
+        "run",
+        "-n",
+        "geo-mcp-env",
+        "--no-capture-output",
+        "python",
+        "/home/torsaan/Documents/Githubproj/GEO_MCP/app.py"
+      ]
+    }
+  }
+}

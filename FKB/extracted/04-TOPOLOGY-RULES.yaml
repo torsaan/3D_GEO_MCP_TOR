@@ -1,0 +1,480 @@
+metadata:
+  analysis_date: "2025-11-04"
+  note: "Consolidated topology rules - see 02-GEOMETRIC-RULES.yaml for full geometric details"
+  primary_source: "FKB_GENRELL_DEL_5.md"
+  cross_references:
+    - "02-GEOMETRIC-RULES.yaml (complete geometric and topology rules)"
+    - "01-MANDATORY-ATTRIBUTES.yaml (object types using each pattern)"
+
+topology_rule_categories:
+
+  shared_geometry_rules:
+    description: "Type 2 flater (delt geometri) - most critical topology in FKB"
+    pattern_name: "Shared Geometry / Delt geometri"
+    rule_count: 15+
+
+    primary_rule:
+      rule_id: "TOPO-CRITICAL-001"
+      description: "Område må være lik sum av avgrensningsobjekter"
+      formula: "flate.equals(union(boundary_objects))"
+      severity: "CRITICAL"
+      source: "FKB_GENRELL_DEL_5.md section 7.1.4 - Type 2 flategeometri"
+      validation_method: "ST_Equals(område, ST_Union(SELECT grense FROM avgrensningsobjekter WHERE referenced))"
+      tolerance: "Within accuracy class standard deviation"
+
+    objects_using_pattern:
+      description: "Objects using Type 2 shared geometry pattern"
+      buildings:
+        - Bygning
+        - AnnenBygning (if using area geometry)
+      roads:
+        - VegKjørende
+        - VegGåendeOgSyklende
+        - Parkeringsområde
+        - Fortau
+        - Trafikkøy
+      water:
+        - Elv
+        - Innsjø
+        - HavEllerHavarm
+        - Kanal
+      facilities:
+        - Kjørebane (airport)
+        - Plattform
+        - KaiBrygge
+      other:
+        - Industriområde
+        - Anleggsområde
+
+    boundary_object_types:
+      description: "Object types used as boundaries in Type 2 pattern"
+      buildings:
+        - Bygningsavgrensning
+        - BygningsavgrensningTiltak
+        - FiktivBygningsavgrensning
+      roads:
+        - Vegdekkekant
+        - Kjørebanekant
+        - Vegskulderkant
+        - VegFiktivGrense
+        - Kantstein
+      water:
+        - Elvekant
+        - Innsjøkant
+        - Kystkontur
+        - Kanalkant
+        - VannFiktivGrense
+      facilities:
+        - FiktivAvgrensningForAnlegg
+
+    validation_method:
+      step_1: "Extract all boundary objects referenced by .REF"
+      step_2: "Account for direction (positive/negative references)"
+      step_3: "Union all boundary geometries"
+      step_4: "Compare with område polygon using equals with tolerance"
+      tolerance_note: "Use accuracy class standard deviation as snap tolerance"
+
+    fictional_boundaries:
+      description: "Fictional boundary objects used to close polygons where physical boundary is unclear"
+      types:
+        - FiktivBygningsavgrensning
+        - VegFiktivGrense
+        - VannFiktivGrense
+        - FiktivAvgrensningForAnlegg
+      usage_rule: "Use only when physical boundary is absent (project edge, unclear delimitation)"
+      constraint: "Must not cross physical boundary objects"
+
+  containment_rules:
+    description: "Point-in-polygon spatial constraints"
+
+    rules:
+      - rule_id: "TOPO-CONTAIN-001"
+        rule: "Posisjon must be within område"
+        description: "When object has both point and polygon geometry, point must be inside polygon"
+        applies_to:
+          - "Bygning (posisjon within område)"
+          - "AnnenBygning (if both present)"
+          - "Objects with both PUNKT and FLATE"
+        validation: "ST_Contains(område, posisjon) OR ST_Touches(område, posisjon)"
+        tolerance: "Point on boundary is acceptable"
+        severity: "HIGH"
+        source: "02-GEOMETRIC-RULES.yaml / GR-COMMON-008"
+
+      - rule_id: "TOPO-CONTAIN-002"
+        rule: "Senterpunkt must be within område"
+        description: "Center point representation must be inside surface"
+        applies_to:
+          - "Objects using center point for surface representation"
+        validation: "ST_Contains(område, senterpunkt)"
+        severity: "MEDIUM"
+
+      - rule_id: "TOPO-CONTAIN-003"
+        rule: "Representative point in .FLATE SOSI structure"
+        description: "SOSI .FLATE objects include ..NØ/..NØH representative point inside polygon"
+        validation: "Representative point must be inside the surface formed by .REF boundaries"
+        applies_to: "All FLATE objects in SOSI format"
+        severity: "HIGH"
+        source: "08-SOSI-FORMAT-RULES.yaml"
+
+  network_topology:
+    description: "Line network connectivity rules"
+
+    rules:
+      - rule_id: "TOPO-NETWORK-001"
+        rule: "Veglenker connect at Knutepunkt"
+        description: "Road network links connect at nodes within snap tolerance"
+        applies_to: "NVDB road network (Veglenke objects)"
+        validation: "ST_Distance(endpoint1, endpoint2) <= snap_tolerance"
+        snap_tolerance: "2 × standardavvik for accuracy class"
+        severity: "CRITICAL"
+        quality_measure: "Antall ulovlige løse ender"
+        acceptable_dangling:
+          - "Dataset boundary"
+          - "Cul-de-sac (dead end street)"
+          - "Ferry terminal"
+        source: "02-GEOMETRIC-RULES.yaml / network_connectivity"
+
+      - rule_id: "TOPO-NETWORK-002"
+        rule: "TraktorvegSti connects to Knutepunkt"
+        description: "Tractor road network connectivity"
+        applies_to: "TraktorvegSti network"
+        validation: "Network endpoints snap together or connect to main road network"
+        severity: "MEDIUM"
+
+      - rule_id: "TOPO-NETWORK-003"
+        rule: "Ledningsnett connectivity"
+        description: "Utility networks connect at nodes (kummer, stasjoner)"
+        applies_to:
+          - "Ledning (power, telecom)"
+          - "LedningVA (water, sewage)"
+        validation: "Endpoints connect at network component objects"
+        severity: "HIGH"
+
+      - rule_id: "TOPO-NETWORK-004"
+        rule: "No illegal dangling ends"
+        description: "Network links should not have loose ends except at logical terminators"
+        validation: "Check all endpoints for connection or valid termination reason"
+        exceptions:
+          - "Dataset boundary"
+          - "Logical network terminator"
+          - "Explicitly marked incomplete feature"
+        quality_measure: "Antall ulovlige løse ender = 0"
+        severity: "HIGH"
+
+      - rule_id: "TOPO-NETWORK-005"
+        rule: "No illegal link crossings"
+        description: "Network links should only intersect at nodes"
+        validation: "Links intersect only at endpoints (nodes)"
+        exception: "Different MEDIUM values (over/under crossings)"
+        quality_measure: "Antall feil i lenkekryssing = 0"
+        severity: "MEDIUM"
+
+  coverage_rules:
+    description: "Full coverage (fulldekkende flater) requirements"
+
+    rules:
+      - rule_id: "TOPO-COVERAGE-001"
+        rule: "No gaps between adjacent polygons"
+        description: "Full coverage datasets must have no gaps"
+        applies_to:
+          - "Arealbruk datasets"
+          - "Arealressurs datasets"
+          - "Specific FKB datasets requiring full coverage"
+        validation: "ST_Union(all_polygons) covers entire area with no holes"
+        tolerance: "Gap <= accuracy class standard deviation"
+        quality_measure: "Prosentandel feil på fulldekkende flater"
+        acceptable_percentage: "0%"
+        severity: "CRITICAL"
+        source: "02-GEOMETRIC-RULES.yaml / coverage_rules"
+
+      - rule_id: "TOPO-COVERAGE-002"
+        rule: "No overlaps between adjacent polygons"
+        description: "Full coverage datasets must have no overlaps"
+        validation: "ST_Overlaps(polygon1, polygon2) is false for all pairs"
+        tolerance: "Overlap <= accuracy class standard deviation"
+        exception: "Different MEDIUM values allow overlap in map view"
+        severity: "HIGH"
+
+      - rule_id: "TOPO-COVERAGE-003"
+        rule: "Shared boundaries are identical"
+        description: "Adjacent polygons share exact same boundary geometry"
+        validation: "Boundary coordinates match exactly (shared geometry pattern)"
+        implementation: "Use Type 2 shared geometry pattern"
+        severity: "CRITICAL"
+
+  association_constraints:
+    description: "Object reference integrity rules"
+
+    rules:
+      - rule_id: "TOPO-ASSOC-001"
+        rule: "All references must resolve"
+        description: "Every .REF or association must point to existing object"
+        validation:
+          sosi: "Sequence number in .REF must exist in file"
+          gml: "xlink:href GML-Id must exist in dataset"
+        severity: "CRITICAL"
+        quality_measure: "Missing references = 0"
+
+      - rule_id: "TOPO-ASSOC-002"
+        rule: "Referenced object has correct type"
+        description: "Referenced object must be of allowed type for association"
+        example: "Bygning references Bygningsavgrensning, not arbitrary object"
+        validation: "Check OBJTYPE of referenced object against allowed types"
+        severity: "CRITICAL"
+
+      - rule_id: "TOPO-ASSOC-003"
+        rule: "Multiplicities must be satisfied"
+        description: "Association cardinality constraints must be met"
+        examples:
+          - "Type 2 flate requires at least 1 boundary object"
+          - "Mast may reference 0 or more Bardun"
+        validation: "Count references and check against [min..max] multiplicity"
+        severity: "HIGH"
+
+      - rule_id: "TOPO-ASSOC-004"
+        rule: "Only concrete types allowed in instances"
+        description: "Cannot reference abstract types (Fellesegenskaper, etc.)"
+        validation: "OBJTYPE must be concrete feature type, not abstract supertype"
+        abstract_types:
+          - "Fellesegenskaper"
+          - "KvalitetPåkrevd"
+          - "KvalitetOpsjonell"
+          - "Identifikasjon"
+          - "Posisjonskvalitet"
+        severity: "CRITICAL"
+        source: "02-GEOMETRIC-RULES.yaml / GR-COMMON-010"
+
+      - rule_id: "TOPO-ASSOC-005"
+        rule: "Bidirectional association consistency"
+        description: "If A references B, check if B should reference A back"
+        applies_to: "Bidirectional associations in model"
+        validation: "Check both directions for consistency"
+        severity: "MEDIUM"
+
+critical_topology_violations:
+  description: "Priority ranking of topology violations"
+
+  violations:
+    - violation: "Område ≠ sum(avgrensningsobjekter)"
+      rule_id: "TOPO-CRITICAL-001"
+      severity: "CRITICAL"
+      impact: "Invalid FKB data - fails most fundamental topology rule"
+      frequency: "Common in manual data creation"
+      detection: "Geometry comparison with tolerance"
+      fix: "Rebuild område from boundaries or fix boundary references"
+
+    - violation: "Posisjon outside område"
+      rule_id: "TOPO-CONTAIN-001"
+      severity: "HIGH"
+      impact: "Geometric inconsistency - point not in correct polygon"
+      frequency: "Moderate"
+      detection: "Point-in-polygon test"
+      fix: "Move point inside or correct område boundary"
+
+    - violation: "Dangling network edges"
+      rule_id: "TOPO-NETWORK-004"
+      severity: "MEDIUM"
+      impact: "Broken network connectivity - routing fails"
+      frequency: "Common at dataset boundaries"
+      detection: "Endpoint analysis with snap tolerance"
+      fix: "Snap endpoints together or mark as legitimate terminator"
+
+    - violation: "Missing references"
+      rule_id: "TOPO-ASSOC-001"
+      severity: "CRITICAL"
+      impact: "Referential integrity violation - data cannot be processed"
+      frequency: "Rare (usually caught by validators)"
+      detection: "Reference resolution check"
+      fix: "Add missing object or remove invalid reference"
+
+    - violation: "Gaps in coverage dataset"
+      rule_id: "TOPO-COVERAGE-001"
+      severity: "CRITICAL"
+      impact: "Incomplete coverage - area analysis fails"
+      frequency: "Moderate"
+      detection: "Union analysis with hole detection"
+      fix: "Add missing polygons or extend existing ones"
+
+    - violation: "Overlaps in coverage dataset"
+      rule_id: "TOPO-COVERAGE-002"
+      severity: "HIGH"
+      impact: "Double-counted areas - invalid coverage"
+      frequency: "Common"
+      detection: "Pairwise overlap analysis"
+      fix: "Adjust boundaries to eliminate overlap"
+
+    - violation: "Self-intersection in geometry"
+      rule_id: "GR-005 (from 02-GEOMETRIC-RULES.yaml)"
+      severity: "CRITICAL"
+      impact: "Invalid geometry - most operations fail"
+      frequency: "Rare"
+      detection: "ST_IsSimple() check"
+      fix: "Rebuild geometry without self-intersection"
+
+    - violation: "Abstract type used in instance"
+      rule_id: "TOPO-ASSOC-004"
+      severity: "CRITICAL"
+      impact: "Invalid data model - cannot instantiate abstract types"
+      frequency: "Very rare"
+      detection: "OBJTYPE validation against allowed concrete types"
+      fix: "Change to concrete subtype"
+
+validation_workflow:
+  description: "Recommended order for topology validation"
+
+  steps:
+    - step: 1
+      name: "Basic geometry validity"
+      checks:
+        - "Closed polygons"
+        - "No self-intersections"
+        - "No self-overlaps"
+        - "Valid coordinate values"
+      reference: "02-GEOMETRIC-RULES.yaml / GR-001 to GR-006"
+
+    - step: 2
+      name: "Reference integrity"
+      checks:
+        - "All .REF references resolve"
+        - "Referenced objects have correct OBJTYPE"
+        - "No abstract types in instances"
+      reference: "TOPO-ASSOC-001 to TOPO-ASSOC-004"
+
+    - step: 3
+      name: "Shared geometry validation (CRITICAL)"
+      checks:
+        - "Område = union(boundaries) for Type 2 flater"
+        - "Boundaries form closed rings"
+        - "Direction handling correct (positive/negative refs)"
+      reference: "TOPO-CRITICAL-001"
+
+    - step: 4
+      name: "Point-in-polygon validation"
+      checks:
+        - "Posisjon inside område"
+        - "Senterpunkt inside område"
+        - "Representative points inside surfaces"
+      reference: "TOPO-CONTAIN-001 to TOPO-CONTAIN-003"
+
+    - step: 5
+      name: "Network connectivity"
+      checks:
+        - "Endpoints snap within tolerance"
+        - "No illegal dangling ends"
+        - "No illegal crossings"
+      reference: "TOPO-NETWORK-001 to TOPO-NETWORK-005"
+
+    - step: 6
+      name: "Coverage validation"
+      checks:
+        - "No gaps in full coverage datasets"
+        - "No overlaps in coverage datasets"
+        - "Shared boundaries identical"
+      reference: "TOPO-COVERAGE-001 to TOPO-COVERAGE-003"
+
+topology_tools:
+  description: "Recommended tools for topology validation"
+
+  gis_tools:
+    - tool: "PostGIS Topology"
+      capabilities:
+        - "ST_IsValid() for geometry validation"
+        - "ST_Contains() for point-in-polygon"
+        - "ST_Equals() for geometry comparison"
+        - "ST_Union() for boundary union"
+        - "ST_Distance() for snap tolerance"
+      recommendation: "Best for large datasets and complex topology"
+
+    - tool: "QGIS Topology Checker"
+      capabilities:
+        - "Visual topology error display"
+        - "Built-in rules for gaps, overlaps, dangles"
+        - "Interactive error correction"
+      recommendation: "Good for interactive validation and correction"
+
+    - tool: "SOSI-kontroll"
+      capabilities:
+        - "SOSI format validation"
+        - "FKB-specific rule checking"
+        - "Reference integrity validation"
+      recommendation: "Essential for SOSI format compliance"
+
+    - tool: "FME (Feature Manipulation Engine)"
+      capabilities:
+        - "Complex topology workflows"
+        - "Automated validation pipelines"
+        - "Format conversion with topology preservation"
+      recommendation: "Best for production workflows"
+
+  custom_validation:
+    note: "Type 2 flate validation often requires custom scripts"
+    complexity: "HIGH"
+    reason: "Union and equals operations with tolerance handling not standard in all GIS"
+    approach: "Use PostGIS or Python with Shapely for custom validation"
+
+implementation_notes:
+
+  snap_tolerance:
+    recommendation: "Use 2 × standardavvik as snap tolerance"
+    rationale: "Allows for measurement uncertainty while preventing false connections"
+    values:
+      FKB-A: "20-110 cm depending on accuracy class"
+      FKB-B: "30-110 cm"
+      FKB-C: "96-200 cm"
+      FKB-D: "96-200 cm"
+    source: "03-ACCURACY-STANDARDS.yaml"
+
+  performance_considerations:
+    - note: "Spatial indexing essential for large datasets"
+      recommendation: "Create R-tree or similar spatial index"
+
+    - note: "Type 2 flate validation computationally expensive"
+      recommendation: "Use tiling/chunking for datasets > 100K polygons"
+
+    - note: "Coverage validation requires full dataset"
+      recommendation: "Cannot be validated on subsets - needs complete area"
+
+  medium_attribute:
+    importance: "CRITICAL for topology"
+    rule: "Objects with different MEDIUM can overlap in plan view"
+    examples:
+      - "Road on bridge (L) over road in tunnel (U)"
+      - "Building (T) with cellar (U) under terrain"
+      - "Power line (L) over building (T)"
+    validation: "Check MEDIUM before flagging overlaps as errors"
+    source: "05-METADATA-RULES.yaml / MEDIUM attribute"
+
+summary_statistics:
+  total_topology_rules: 15
+  critical_rules: 5
+  high_severity_rules: 6
+  medium_severity_rules: 4
+  objects_using_shared_geometry: "30+"
+  boundary_object_types: "15+"
+
+references:
+  - document: "02-GEOMETRIC-RULES.yaml"
+    description: "Complete geometric and basic topology rules"
+
+  - document: "01-MANDATORY-ATTRIBUTES.yaml"
+    description: "All object types and their required attributes"
+
+  - document: "03-ACCURACY-STANDARDS.yaml"
+    description: "Accuracy requirements affecting snap tolerances"
+
+  - document: "05-METADATA-RULES.yaml"
+    description: "MEDIUM attribute rules affecting topology"
+
+  - document: "08-SOSI-FORMAT-RULES.yaml"
+    description: "SOSI reference and geometry encoding"
+
+  - standard: "FKB Generell del 5.1"
+    url: "https://sosi.geonorge.no/standarder/FKB_generell_del/5.1"
+    section: "7.1.4 Flategeometri (Type 1 and Type 2)"
+
+  - standard: "Geodatakvalitet"
+    description: "Quality measures for topology"
+    measures:
+      - "Antall ulovlige løse ender"
+      - "Antall feil i lenkekryssing"
+      - "Prosentandel feil på fulldekkende flater"

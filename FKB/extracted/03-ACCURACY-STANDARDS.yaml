@@ -1,0 +1,352 @@
+metadata:
+  analysis_date: "2025-11-04"
+  source: "FKB_GENRELL_DEL_5.md"
+  note: "Complete FKB accuracy standards for all classes"
+  fkb_version: "5.1"
+  introduced_date: "2024-07"
+  specification_url: "https://sosi.geonorge.no/standarder/FKB_generell_del/5.1"
+
+fkb_accuracy_standards:
+  description: "Stedfestingsnøyaktighet (positioning accuracy) requirements for FKB standards"
+  note: "Values are systematic deviation / standard deviation in centimeters (cm)"
+
+  standards:
+    - standard_name: "FKB-A"
+      description: "Central urban areas, highest accuracy"
+      applies_to: "Dense cities and areas requiring highest precision"
+      classes:
+        - class: 1
+          class_name: "Svært veldefinerte detaljer"
+          class_description: "Very well-defined features"
+          horizontal:
+            systematic_deviation_cm: 3
+            standard_deviation_cm: 10
+          vertical:
+            systematic_deviation_cm: 3
+            standard_deviation_cm: 10
+
+        - class: 2
+          class_name: "Veldefinerte detaljer"
+          class_description: "Well-defined features"
+          horizontal:
+            systematic_deviation_cm: 5
+            standard_deviation_cm: 15
+          vertical:
+            systematic_deviation_cm: 5
+            standard_deviation_cm: 15
+
+        - class: 3
+          class_name: "Uskarpe detaljer"
+          class_description: "Fuzzy/unclear features"
+          horizontal:
+            systematic_deviation_cm: 10
+            standard_deviation_cm: 35
+          vertical:
+            systematic_deviation_cm: 8
+            standard_deviation_cm: 25
+
+        - class: 4
+          class_name: "Diffuse detaljer"
+          class_description: "Diffuse features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 55
+          vertical:
+            systematic_deviation_cm: 12
+            standard_deviation_cm: 40
+
+    - standard_name: "FKB-B"
+      description: "Urban and suburban areas"
+      applies_to: "Cities and built-up areas with moderate density"
+      classes:
+        - class: 1
+          class_name: "Svært veldefinerte detaljer"
+          class_description: "Very well-defined features"
+          horizontal:
+            systematic_deviation_cm: 5
+            standard_deviation_cm: 15
+          vertical:
+            systematic_deviation_cm: 5
+            standard_deviation_cm: 15
+
+        - class: 2
+          class_name: "Veldefinerte detaljer"
+          class_description: "Well-defined features"
+          horizontal:
+            systematic_deviation_cm: 6
+            standard_deviation_cm: 20
+          vertical:
+            systematic_deviation_cm: 6
+            standard_deviation_cm: 20
+
+        - class: 3
+          class_name: "Uskarpe detaljer"
+          class_description: "Fuzzy/unclear features"
+          horizontal:
+            systematic_deviation_cm: 10
+            standard_deviation_cm: 35
+          vertical:
+            systematic_deviation_cm: 10
+            standard_deviation_cm: 35
+
+        - class: 4
+          class_name: "Diffuse detaljer"
+          class_description: "Diffuse features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 55
+          vertical:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 50
+
+    - standard_name: "FKB-C"
+      description: "Rural areas and countryside"
+      applies_to: "Less dense areas, rural settlements"
+      note: "FKB-C and FKB-D have identical accuracy requirements"
+      classes:
+        - class: 1
+          class_name: "Svært veldefinerte detaljer"
+          class_description: "Very well-defined features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 48
+          vertical:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 48
+
+        - class: 2
+          class_name: "Veldefinerte detaljer"
+          class_description: "Well-defined features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 55
+          vertical:
+            systematic_deviation_cm: 20
+            standard_deviation_cm: 70
+
+        - class: 3
+          class_name: "Uskarpe detaljer"
+          class_description: "Fuzzy/unclear features"
+          horizontal:
+            systematic_deviation_cm: 20
+            standard_deviation_cm: 70
+          vertical:
+            systematic_deviation_cm: 25
+            standard_deviation_cm: 90
+
+        - class: 4
+          class_name: "Diffuse detaljer"
+          class_description: "Diffuse features"
+          horizontal:
+            systematic_deviation_cm: 30
+            standard_deviation_cm: 100
+          vertical:
+            systematic_deviation_cm: 40
+            standard_deviation_cm: 150
+
+    - standard_name: "FKB-D"
+      description: "Wilderness and remote areas"
+      applies_to: "Undeveloped and wilderness areas with lowest density"
+      note: "FKB-C and FKB-D have identical accuracy requirements"
+      classes:
+        - class: 1
+          class_name: "Svært veldefinerte detaljer"
+          class_description: "Very well-defined features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 48
+          vertical:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 48
+
+        - class: 2
+          class_name: "Veldefinerte detaljer"
+          class_description: "Well-defined features"
+          horizontal:
+            systematic_deviation_cm: 15
+            standard_deviation_cm: 55
+          vertical:
+            systematic_deviation_cm: 20
+            standard_deviation_cm: 70
+
+        - class: 3
+          class_name: "Uskarpe detaljer"
+          class_description: "Fuzzy/unclear features"
+          horizontal:
+            systematic_deviation_cm: 20
+            standard_deviation_cm: 70
+          vertical:
+            systematic_deviation_cm: 25
+            standard_deviation_cm: 90
+
+        - class: 4
+          class_name: "Diffuse detaljer"
+          class_description: "Diffuse features"
+          horizontal:
+            systematic_deviation_cm: 30
+            standard_deviation_cm: 100
+          vertical:
+            systematic_deviation_cm: 40
+            standard_deviation_cm: 150
+
+quality_rules:
+  - rule_id: "ACC-001"
+    description: "Systematisk avvik må være ≤ 1/3 × standardavvik"
+    detail: "Systematic deviation requirement set to maximum 1/3 of standard deviation requirement"
+    source_section: "8.3 Krav til stedfestingsnøyaktighet - inndeling i klasser"
+    introduced_version: "FKB 5.1"
+    rationale: "Ensures systematic deviation only contributes small portion of total deviation between true and measured position"
+
+  - rule_id: "ACC-002"
+    description: "Grove feil > 3 × standardavvik må være < 1% av punkter"
+    detail: "Gross errors (deviations > 3 × standard deviation) must be less than 1% of points"
+    source_section: "8.3 Krav til stedfestingsnøyaktighet"
+    note: "Maximum 1% gross errors is typical, but may vary for specific object types (specified in individual FKB product specifications)"
+    introduced_version: "FKB 5.1"
+
+  - rule_id: "ACC-003"
+    description: "NØYAKTIGHET value represents standardavvik (standard deviation)"
+    detail: "The NØYAKTIGHET attribute in metadata represents the standard deviation of positioning"
+    source_section: "8.3 Krav til stedfestingsnøyaktighet"
+    note: "For photogrammetric data, value is typically set equal to the standard deviation requirement for data capture"
+
+  - rule_id: "ACC-004"
+    description: "Historical change: Explicit systematic deviation requirements new in FKB 5.1"
+    detail: "Previous FKB versions did not define explicit systematic deviation requirements"
+    source_section: "8.3 Krav til stedfestingsnøyaktighet"
+    historical_note: "Previously used 'standardavvik' similar to RMS definition in Geodatakvalitet, not true standard deviation"
+    introduced_version: "FKB 5.1"
+
+  - rule_id: "ACC-005"
+    description: "Must control both standard deviation, systematic deviation, and proportion of gross errors"
+    detail: "When checking positioning accuracy, all three measures must be controlled against reference data"
+    source_section: "8.2 Kvalitetselementer"
+    reference_standard: "Geodatakvalitet"
+
+quality_elements:
+  description: "Quality elements from Geodatakvalitet standard used in FKB"
+  source_standard: "Geodatakvalitet"
+
+  positioning_accuracy:
+    category: "Stedfestingsnøyaktighet"
+
+    horizontal_accuracy:
+      - element: "Grunnrissnøyaktighet"
+        quality_measure: "Grove feil (%)"
+        reference: "Geodatakvalitet:2014/301/1"
+
+      - element: "Grunnrissnøyaktighet"
+        quality_measure: "Systematiske feil (m)"
+        reference: "Geodatakvalitet:2014/303/1"
+
+      - element: "Grunnrissnøyaktighet"
+        quality_measure: "Standardavvik (m)"
+        reference: "Geodatakvalitet:2014/304/1"
+
+    vertical_accuracy:
+      - element: "Høydenøyaktighet"
+        quality_measure: "Grove feil (%)"
+        reference: "Geodatakvalitet:2014/301/1"
+
+      - element: "Høydenøyaktighet"
+        quality_measure: "Systematiske feil (m)"
+        reference: "Geodatakvalitet:2014/302/1"
+
+      - element: "Høydenøyaktighet"
+        quality_measure: "Standardavvik (m)"
+        reference: "Geodatakvalitet:2014/304/1"
+
+class_assignment_principles:
+  description: "How object types are assigned to accuracy classes"
+  principle: "Classification based on how sharply the object type is defined in terrain"
+  note: "Specific object type classifications found in individual FKB dataset specifications"
+
+  class_definitions:
+    - class: 1
+      name: "Svært veldefinerte detaljer"
+      english: "Very well-defined features"
+      characteristics: "Sharp, clear edges and boundaries observable in terrain and imagery"
+      examples: "Building corners, road edges with curbs, manhole covers"
+
+    - class: 2
+      name: "Veldefinerte detaljer"
+      english: "Well-defined features"
+      characteristics: "Clear but less sharp boundaries"
+      examples: "Road edges without curbs, building walls"
+
+    - class: 3
+      name: "Uskarpe detaljer"
+      english: "Fuzzy/unclear features"
+      characteristics: "Boundaries not sharply defined in terrain"
+      examples: "Vegetation boundaries, terrain transitions"
+
+    - class: 4
+      name: "Diffuse detaljer"
+      english: "Diffuse features"
+      characteristics: "Very unclear or gradual boundaries"
+      examples: "Wetland edges, gradual vegetation transitions"
+
+application_notes:
+  - note: "These accuracy class requirements apply throughout photogrammetric FKB"
+    scope: "All photogrammetrically captured FKB datasets"
+
+  - note: "Can be used as starting point for other capture methods"
+    scope: "Non-photogrammetric methods (GNSS, laser scanning, etc.)"
+
+  - note: "Individual FKB dataset specifications define which class applies to each object type"
+    reference: "See individual product specifications (FKB-Bygning, FKB-Veg, etc.)"
+
+  - note: "Standard deviation alone used in metadata to represent data accuracy"
+    detail: "The NØYAKTIGHET value represents standard deviation only, not RMS or total error"
+
+accuracy_by_geometry_type:
+  description: "How accuracy is interpreted for different geometry types"
+
+  - geometry: "PUNKT (Point)"
+    accuracy_interpretation: "Point standard deviation"
+    description: "3D deviation from true point position"
+
+  - geometry: "KURVE (Curve/Line)"
+    accuracy_interpretation: "Transverse deviation from curve"
+    description: "Perpendicular distance from measured curve to true curve position"
+
+  - geometry: "FLATE (Surface/Polygon)"
+    accuracy_interpretation: "3D distance to nearest point on surface"
+    description: "3D deviation between true position and nearest point on measured surface"
+
+  - geometry: "VOLUM (Volume)"
+    accuracy_interpretation: "3D distance to nearest point on volume boundary"
+    description: "3D deviation between true position and nearest point on measured volume surface"
+
+validation_requirements:
+  description: "Requirements for quality control of FKB data"
+
+  mandatory_checks:
+    - check: "Standard deviation control"
+      method: "Compare measured positions against reference data (fasit)"
+      threshold: "Must meet class requirements"
+
+    - check: "Systematic deviation control"
+      method: "Calculate mean deviation from reference data"
+      threshold: "Must meet class requirements (≤ 1/3 of standard deviation)"
+
+    - check: "Gross error control"
+      method: "Count deviations > 3 × standard deviation"
+      threshold: "Must be < 1% (typically, may vary per object type)"
+
+  reference_data:
+    requirement: "Control must be performed against reference data (fasit)"
+    accuracy: "Reference data must be significantly more accurate than data being checked"
+    source: "Geodatakvalitet standard"
+
+comparison_with_previous_versions:
+  fkb_50_and_earlier:
+    systematic_deviation: "Not explicitly defined"
+    standard_deviation_definition: "Similar to RMS (systematic deviation not subtracted)"
+    note: "Did not conform to Geodatakvalitet standard definition"
+
+  fkb_51:
+    systematic_deviation: "Explicitly defined (≤ 1/3 × standard deviation)"
+    standard_deviation_definition: "True standard deviation per Geodatakvalitet"
+    note: "Fully conforms to Geodatakvalitet standard"
+    change_reason: "Enable proper quality control following Geodatakvalitet standard"

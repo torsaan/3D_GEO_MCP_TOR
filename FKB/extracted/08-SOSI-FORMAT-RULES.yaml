@@ -1,0 +1,535 @@
+metadata:
+  analysis_date: "2025-11-04"
+  sosi_version: "5.0"
+  fkb_version: "5.1"
+  source: "FKB_GENRELL_DEL_5.md"
+  specification_reference: "SOSI Realisering i SOSI-format, versjon 5.0 2018"
+  specification_url: "https://register.geonorge.no/standarder/sosi/del-1-generell-del/realisering-i-sosi-format"
+
+sosi_format_overview:
+  description: "SOSI file format requirements for FKB data exchange"
+  version: "5.0"
+  encoding: "UTF-8"
+  note: "FKB 5.1 data can be converted between SOSI format and GML format without information loss"
+
+sosi_format_rules:
+  description: "SOSI file structure and encoding rules"
+
+  file_structure:
+    - element: ".HODE"
+      nesting_level: 0
+      required: true
+      description: "File header - contains metadata for entire file"
+      required_subelements:
+        - ".TEGNSETT"
+        - ".KOORDSYS"
+        - ".VERT-DATUM"
+        - ".SOSI-VERSJON"
+        - ".OBJEKTKATALOG"
+      note: "Header elements at level 1 (single dot)"
+
+    - element: ".[GEOMETRY_TYPE]"
+      nesting_level: 0
+      examples:
+        - ".PUNKT"
+        - ".KURVE"
+        - ".FLATE"
+      required: false
+      description: "Object definition with geometry type and sequence number"
+      format: ".[GEOMETRY_TYPE] [sequence_number]:"
+      example: ".KURVE 1:"
+      required_subelements:
+        - "..OBJTYPE"
+        - "..DATAFANGSTDATO"
+        - "..KVALITET"
+        - "Geometry element (..NØ, ..NØH, or ..REF)"
+
+    - element: "..OBJTYPE"
+      nesting_level: 2
+      required: true
+      description: "Object type name"
+      format: "..OBJTYPE [ObjectTypeName]"
+      example: "..OBJTYPE Bygning"
+
+    - element: "..IDENT"
+      nesting_level: 2
+      required: true
+      description: "Identification group containing LOKALID, NAVNEROM, VERSJONID"
+      subelements:
+        - "...LOKALID"
+        - "...NAVNEROM"
+        - "...VERSJONID (optional)"
+
+    - element: "..KVALITET"
+      nesting_level: 2
+      required: "Usually required (see KvalitetPåkrevd/KvalitetOpsjonell)"
+      description: "Quality metadata group"
+      subelements:
+        - "...DATAFANGSTMETODE"
+        - "...NØYAKTIGHET"
+        - "...SYNBARHET"
+        - "...DATAFANGSTMETODEHØYDE"
+        - "...H-NØYAKTIGHET"
+
+  geometry_elements:
+    description: "Geometry encoding in SOSI format"
+
+    - geometry_type: "PUNKT"
+      sosi_element: "..NØ"
+      format: "..NØ [X] [Y]"
+      unit: "Centimeters (cm) as integers"
+      dimension: "2D"
+      example: "..NØ 7034127981 567190174"
+      note: "Coordinates in cm: multiply meters by 100"
+
+    - geometry_type: "PUNKT (3D)"
+      sosi_element: "..NØH"
+      format: "..NØH [X] [Y] [Z]"
+      unit: "Centimeters (cm) as integers"
+      dimension: "3D"
+      example: "..NØH 7034127981 567190174 126900"
+      note: "Z coordinate (height) also in cm"
+
+    - geometry_type: "KURVE"
+      sosi_element: "..NØH"
+      format: "..NØH\\n[X1] [Y1] [Z1]\\n[X2] [Y2] [Z2]\\n..."
+      unit: "Centimeters (cm) as integers"
+      dimension: "3D (can be 2D with ..NØ)"
+      description: "Coordinate list on following lines"
+      example: |
+        ..NØH
+        7034142346 567181215 43670
+        7034142346 567189494 65130
+      note: "Each coordinate triple on separate line"
+
+    - geometry_type: "FLATE (owned geometry)"
+      sosi_element: "..REF and ..NØ/..NØH"
+      description: "Reference to helper object(s) containing boundary geometry"
+      helper_object: ".KURVE with OBJTYPE Flateavgrensning (no identification/lokalid)"
+      format: "..REF :[sequence_number] [:[hole_sequence]...]"
+      example: "..REF :1"
+      note: "Flateavgrensning objects referenced from surface object"
+      representation_point: "..NØ or ..NØH with single coordinate for representation point"
+
+    - geometry_type: "FLATE (shared geometry)"
+      sosi_element: "..REF and ..NØ/..NØH"
+      description: "References to boundary objects with full identification"
+      format: "..REF :[seq_pos] :[seq_neg]..."
+      example: "..REF :2 :-3"
+      representation_point: "..NØ or ..NØH with single coordinate"
+      note: "Positive reference = follow direction, negative = reverse direction"
+
+  data_type_encodings:
+    description: "How different data types are encoded in SOSI"
+
+    - type: "Text (T)"
+      encoding: "UTF-8 string"
+      example: '..INFORMASJON "Dette er fiktive eksempeldata"'
+      quoting: "Quoted if contains spaces or special characters"
+
+    - type: "Integer (H - Heltall)"
+      encoding: "Decimal integer"
+      example: "..NØYAKTIGHET 120"
+      note: "No quotes"
+
+    - type: "Date (DATO)"
+      encoding: "YYYYMMDD"
+      example: "..DATAFANGSTDATO 20210924"
+      note: "No separators, no quotes"
+
+    - type: "DateTime (DATOTID)"
+      encoding: "YYYYMMDDHHMMSS"
+      example: "..OPPDATERINGSDATO 20210929133801"
+      note: "No separators, no quotes"
+
+    - type: "Real number (REAL)"
+      encoding: "Decimal with period as separator"
+      example: "..LINJEBREDDE 0.23"
+      note: "Period as decimal separator"
+
+    - type: "Boolean"
+      encoding: "JA/NEI"
+      example: "..BELYSNING JA"
+      note: "Norwegian yes/no"
+
+    - type: "CodeList value"
+      encoding: "Code string (usually 1-3 characters)"
+      example: "...DATAFANGSTMETODE fot"
+      note: "Code value without quotes"
+
+    - type: "UUID"
+      encoding: "Quoted string"
+      format: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      example: '...LOKALID "5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d"'
+      note: "Always quoted"
+
+    - type: "URL/URI"
+      encoding: "Full URL as unquoted or quoted string"
+      example: '...NAVNEROM "http://data.geonorge.no/SOSI/FKB-Bygning/5.0"'
+      note: "Usually quoted"
+
+  coordinate_encoding:
+    description: "Rules for encoding coordinates in SOSI format"
+
+    unit: "Centimeters (cm)"
+    conversion: "Multiply meter values by 100"
+    type: "Integer"
+    precision: "1 cm (0.01 m)"
+
+    examples:
+      - meters: "70341.27981"
+        centimeters: 7034127981
+        note: "X coordinate (Easting)"
+
+      - meters: "5671.90174"
+        centimeters: 567190174
+        note: "Y coordinate (Northing)"
+
+      - meters: "12.69"
+        centimeters: 1269
+        note: "Z coordinate (Height)"
+
+    coordinate_order:
+      horizontal: "X (Easting) Y (Northing)"
+      note: "Not lat/lon order"
+      projection: "UTM coordinates in specified zone"
+
+    dimension_rules:
+      - rule: "Use ..NØ for 2D coordinates (X, Y)"
+      - rule: "Use ..NØH for 3D coordinates (X, Y, Z)"
+      - rule: "All coordinates in a geometry must have same dimension"
+
+  formatting_rules:
+    - rule_id: "SOSI-FORMAT-001"
+      description: "Indentation: 1 dot per nesting level"
+      detail: "Level 0: no dots (.HODE, .PUNKT), Level 1: 1 dot (.TEGNSETT), Level 2: 2 dots (..OBJTYPE), Level 3: 3 dots (...DATAFANGSTMETODE)"
+      example: |
+        .PUNKT 1:
+        ..OBJTYPE Mast
+        ..KVALITET
+        ...DATAFANGSTMETODE fot
+
+    - rule_id: "SOSI-FORMAT-002"
+      description: "Elements start with dots based on nesting level"
+      detail: "Dots indicate hierarchy and structure"
+
+    - rule_id: "SOSI-FORMAT-003"
+      description: "Coordinates: integer centimeters (multiply meters by 100)"
+      detail: "All coordinate values must be integers in cm"
+
+    - rule_id: "SOSI-FORMAT-004"
+      description: "Text encoding: UTF-8"
+      detail: "File must be UTF-8 encoded, specified in .TEGNSETT UTF-8"
+
+    - rule_id: "SOSI-FORMAT-005"
+      description: "Line endings: Platform native"
+      detail: "CRLF (Windows) or LF (Unix) acceptable"
+
+    - rule_id: "SOSI-FORMAT-006"
+      description: "Sequence numbers: Integers starting from 1"
+      detail: "Object groups numbered sequentially within file"
+      example: ".KURVE 1:, .KURVE 2:, .PUNKT 1:, .PUNKT 2:"
+
+    - rule_id: "SOSI-FORMAT-007"
+      description: "Attribute value on same line as attribute name"
+      detail: "Exception: coordinate lists follow on next lines"
+      example: "..DATAFANGSTDATO 20210924"
+
+    - rule_id: "SOSI-FORMAT-008"
+      description: "Coordinate lists on separate lines after geometry element"
+      example: |
+        ..NØH
+        7034142346 567181215 43670
+        7034142346 567189494 65130
+
+    - rule_id: "SOSI-FORMAT-009"
+      description: "Multiple values on same line space-separated"
+      example: "..NØH 7034127981 567190174 126900"
+      applies_to: "Single-point coordinates, references"
+
+    - rule_id: "SOSI-FORMAT-010"
+      description: "References use colon prefix"
+      format: ":[sequence_number]"
+      example: "..REF :1, ..BARDUN :1"
+      negative: ":-3 indicates reverse direction for boundary"
+
+  association_encoding:
+    description: "How associations between objects are encoded"
+    method: "Reference to SOSI group sequence number"
+    scope: "Unique only within SOSI file"
+
+    format: "..[ASSOCIATION_NAME] :[sequence_number]"
+    example: "..BARDUN :1"
+    interpretation: "References object with sequence number 1"
+
+    note: "Unlike GML which uses LOKALID, SOSI uses file-internal sequence numbers"
+
+    example_full: |
+      .KURVE 1:
+      ..OBJTYPE Bardun
+      ..IDENT
+      ...LOKALID "5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d"
+
+      .PUNKT 2:
+      ..OBJTYPE Mast
+      ..BARDUN :1
+
+  surface_geometry_rules:
+    description: "Special rules for encoding surface (FLATE) objects"
+
+    type1_owned_geometry:
+      description: "Surfaces with owned (heleid) geometry"
+      method: "Helper object approach"
+
+      steps:
+        - step: 1
+          action: "Create .KURVE group with OBJTYPE Flateavgrensning"
+          note: "No IDENT/LOKALID on Flateavgrensning"
+
+        - step: 2
+          action: "Put boundary coordinates in Flateavgrensning object"
+          note: "Coordinates must form closed polygon (first=last point)"
+
+        - step: 3
+          action: "Create .FLATE group for actual object"
+
+        - step: 4
+          action: "Reference Flateavgrensning with ..REF :[sequence]"
+
+        - step: 5
+          action: "Include representation point in .FLATE object with ..NØ or ..NØH"
+
+      example: |
+        .KURVE 1:
+        ..OBJTYPE Flateavgrensning
+        ..NØH
+        6661981480 569544030 89200
+        6662009490 569606410 91200
+        6661981480 569544030 89200
+
+        .FLATE 2:
+        ..OBJTYPE Anleggsområde
+        ..IDENT
+        ...LOKALID "58c892c4-f615-4317-935f-038765687265"
+        ..REF :1
+        ..NØ
+        6662024665 568494636
+
+      holes_handling: "Create separate Flateavgrensning objects for holes, reference as holes per SOSI rules"
+
+    type2_shared_geometry:
+      description: "Surfaces with shared (delt) geometry - traditional SOSI"
+      method: "Reference to boundary objects with full identification"
+
+      format: "..REF :[positive_ref] :[negative_ref] ..."
+      direction:
+        positive: "Follow object direction"
+        negative: "Reverse object direction"
+
+      example: |
+        .FLATE 1:
+        ..OBJTYPE Bygning
+        ..IDENT
+        ...LOKALID "5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d"
+        ..REF :2 :-3
+        ..NØH
+        56844403 666198148 8920
+
+        .KURVE 2:
+        ..OBJTYPE Bygningsavgrensning
+        ..IDENT
+        ...LOKALID "81ffc802-3e9f-492b-95b6-bb15b645a7e8"
+        ..NØH
+        56852584 666199897 9080
+        56850641 666200949 9120
+        56844403 666198148 8920
+
+        .KURVE 3:
+        ..OBJTYPE Bygningsavgrensning
+        ..IDENT
+        ...LOKALID "32face7c-c0d8-4264-ac2d-1e47977cc976"
+        ..NØH
+        56852584 666199897 9080
+        56863332 666204912 9150
+
+complete_example:
+  description: "Complete SOSI file example with header and objects"
+
+  example: |
+    .HODE
+    ..TEGNSETT UTF-8
+    ..KOORDSYS 23
+    ..VERT-DATUM NN2000
+    ..SOSI-VERSJON 5.0
+    ..OBJEKTKATALOG FKBLedning 5.0
+
+    .KURVE 1:
+    ..OBJTYPE Bardun
+    ..IDENT
+    ...LOKALID "5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d"
+    ...NAVNEROM "http://data.geonorge.no/SFKB/50/FKB-Ledning/so"
+    ...VERSJONID "2021-09-24 11:51:54.015000"
+    ..OPPDATERINGSDATO 20210929133801
+    ..DATAFANGSTDATO 20210924
+    ..VERIFISERINGSDATO 20210924
+    ..REGISTRERINGSVERSJON 2022-01-01
+    ..INFORMASJON "Dette er fiktive eksempeldata"
+    ..HREF TOP
+    ..MEDIUM T
+    ..KVALITET
+    ...DATAFANGSTMETODE fot
+    ...NØYAKTIGHET 120
+    ...SYNBARHET 0
+    ...DATAFANGSTMETODEHØYDE fot
+    ...H-NØYAKTIGHET 200
+    ..DRIFTSMERKING "ABCD1234"
+    ..EIERORGNR "234567891"
+    ..EKSTERNPEKER https://enangitturl/geografiskobjekt/5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d
+    ..LEDNINGSNETTVERKSTYPE ekom
+    ..NØH
+    7034142346 567181215 43670
+    7034142346 567189494 65130
+
+    .PUNKT 2:
+    ..OBJTYPE Mast
+    ..IDENT
+    ...LOKALID "81ffc802-3e9f-492b-95b6-bb15b645a7e8"
+    ...NAVNEROM "http://data.geonorge.no/SFKB/50/FKB-Ledning/so"
+    ...VERSJONID "2021-09-24 11:51:54.015000"
+    ..OPPDATERINGSDATO 20210929133801
+    ..DATAFANGSTDATO 20210924
+    ..VERIFISERINGSDATO 20210924
+    ..REGISTRERINGSVERSJON 2022-01-01
+    ..INFORMASJON "Dette er fiktive eksempeldata"
+    ..HREF TOP
+    ..MEDIUM T
+    ..KVALITET
+    ...DATAFANGSTMETODE fot
+    ...NØYAKTIGHET 30
+    ...SYNBARHET 0
+    ...DATAFANGSTMETODEHØYDE fot
+    ...H-NØYAKTIGHET 110
+    ..DRIFTSMERKING "ABCD1234"
+    ..EIERORGNR "234567891"
+    ..EKSTERNPEKER https://enangitturl/geografiskobjekt/81ffc802-3e9f-492b-95b6-bb15b645a7e8
+    ..LEDNINGSNETTVERKSTYPE lavspentnett
+    ..ANTALL_LASERPUNKT 55
+    ..BELYSNING JA
+    ..MASTEKONSTRUKSJON enkelStolpe
+    ..LINJEBREDDE 0.23
+    ..VERTIKALAVSTAND 8.23
+    ..BARDUN :1
+    ..NØH
+    7034127981 567190174 126900
+
+distribution_formats:
+  description: "Available formats for FKB data distribution from Geonorge"
+  source_table: "Table 12 - Leveranseformater ved distribusjon"
+
+  formats:
+    - format: "GML 3.2.1"
+      division: "Kommunevise filer (municipality files)"
+      coordinate_system: "Euref89 UTM33 + local UTM zone"
+      encoding: "UTF-8"
+      language: "Norwegian (nor)"
+
+    - format: "SOSI-format 5.0"
+      division: "Kommunevise filer (municipality files)"
+      coordinate_system: "Euref89 UTM33 + local UTM zone"
+      encoding: "UTF-8"
+      language: "Norwegian (nor)"
+
+    - format: "ESRI fgdb"
+      division: "Kommunevise filer (municipality files)"
+      coordinate_system: "Euref89 UTM33 + local UTM zone"
+      encoding: "UTF-8"
+      language: "Norwegian (nor)"
+
+    - format: "ESRI fgdb"
+      division: "Landsdekkende + fylkesvise filer (national + county files)"
+      coordinate_system: "Euref89 UTM33"
+      encoding: "UTF-8"
+      language: "Norwegian (nor)"
+
+conversion_rules:
+  description: "Rules for converting between SOSI and GML"
+
+  bidirectional_conversion:
+    rule: "All FKB 5.1 data can be converted between SOSI and GML without information loss"
+    standards:
+      - "SOSI Realisering av GML-format 5.0"
+      - "SOSI Realisering av SOSI-format 5.0"
+
+  key_differences:
+    - aspect: "Association references"
+      sosi: "Reference to sequence number (:[seq])"
+      gml: "Reference to GML-Id (xlink:href)"
+      note: "GML-Id format: ObjectType_LocalId"
+
+    - aspect: "Surface geometry"
+      sosi: "Reference-based (.REF to boundaries or Flateavgrensning)"
+      gml: "Inline geometry (coordinates directly in object)"
+
+    - aspect: "Identifiers"
+      sosi: "Sequence numbers (file scope)"
+      gml: "GML-Id (globally unique)"
+
+  gml_id_convention:
+    format: "[ObjectTypeName]_[LocalId]"
+    example: "Bardun_5e1d42bb-fd1c-4a58-92dc-aa0b3fadf57d"
+    purpose: "Make GML-Id unique and meaningful outside GML file"
+
+validation_checklist:
+  description: "Checklist for validating SOSI format files"
+
+  header_checks:
+    - check: ".HODE present at start of file"
+    - check: ".TEGNSETT UTF-8 specified"
+    - check: ".KOORDSYS matches region (22/23/25)"
+    - check: ".VERT-DATUM specified (NN2000 or ikke angitt)"
+    - check: ".SOSI-VERSJON 5.0"
+    - check: ".OBJEKTKATALOG matches FKB dataset"
+
+  object_checks:
+    - check: "Geometry type (.PUNKT, .KURVE, .FLATE) with sequence number"
+    - check: "..OBJTYPE present and valid"
+    - check: "..IDENT group present with ...LOKALID and ...NAVNEROM"
+    - check: "..KVALITET group present (if required)"
+    - check: "...DATAFANGSTMETODE present in ..KVALITET"
+    - check: "..DATAFANGSTDATO present"
+    - check: "..OPPDATERINGSDATO present"
+    - check: "Geometry element present (..NØ, ..NØH, or ..REF)"
+
+  coordinate_checks:
+    - check: "Coordinates are integers (in cm)"
+    - check: "Coordinate values reasonable for Norway UTM"
+    - check: "All coordinates in geometry have same dimension"
+    - check: "Curve/surface boundaries close properly (first=last)"
+
+  format_checks:
+    - check: "Correct indentation (dots per level)"
+    - check: "UTF-8 encoding"
+    - check: "Date format YYYYMMDD"
+    - check: "DateTime format YYYYMMDDHHMMSS"
+    - check: "UUID format correct"
+    - check: "Code list values valid"
+
+  reference_checks:
+    - check: "Association references point to valid sequence numbers"
+    - check: "Surface references point to valid boundary objects"
+    - check: "Negative references used correctly (direction reversal)"
+
+precision_and_accuracy_notes:
+  coordinate_precision:
+    value: "1 cm"
+    reason: "Integer centimeters provide 0.01m precision"
+    sufficient_for: "All FKB accuracy standards (best is 3cm systematic, 10cm standard deviation)"
+
+  transformation_warning:
+    note: "FKB data has high precision - be aware of transformation errors"
+    requirement: "If transformation needed, must achieve better than ~5mm precision"
+    recommendation: "Update directly in municipality coordinate system to avoid transformation"
+
+  local_coordinate_systems:
+    note: "FKB maintained in local UTM zones per region"
+    reason: "Avoid transformation errors, maintain high precision"
