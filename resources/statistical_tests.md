@@ -14,7 +14,7 @@ After a least squares adjustment, statistical tests are crucial for validating t
 
 ## 2. Outlier Detection (Gross Error Search - Chapter 22)
 
-* **Purpose:** To identify individual observations that contain blunders (gross errors) inconsistent with the random error model [
+* **Purpose:** To identify individual observations that contain blunders (gross errors) inconsistent with the random error model 
 * **Method:** Commonly uses statistical tests on the **residuals (v)** or **standardized residuals**.
 * **Standardized Residual (w):** `wi = vi / σvi`, where `σvi` is the standard deviation of the residual `vi`. This requires the covariance matrix of the residuals (`Σvv = σ0^2 * Qvv`, where `Qvv = P^-1 - A * (AT P A)^-1 * AT`).
 * **Data Snooping (Baarda's Method):** Tests each observation individually.
