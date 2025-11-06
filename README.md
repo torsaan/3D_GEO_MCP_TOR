@@ -359,14 +359,7 @@ pytest          # Running tests
 pytest-cov      # Test coverage
 ```
 
-### System Requirements
-
-- **Memory:** 8GB RAM minimum (16GB recommended for large point clouds)
-- **Storage:** 100MB for code, variable for data
-- **GPU:** Optional (for GPU-accelerated clustering)
-
 ---
-
 ## 📖 FKB Standards
 
 GEO-MCP Server supports all four FKB accuracy standards:
