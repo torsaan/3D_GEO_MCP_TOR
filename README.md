@@ -7,15 +7,15 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 GEO-MCP Server provides AI assistants (Claude, Cursor, etc.) with specialized capabilities for:
-- 📊 **Point cloud processing** (LAS/LAZ files)
-- 🗺️ **FKB validation** (Norwegian mapping standard)
-- 📝 **SOSI file generation** (Norwegian GIS format)
-- 📐 **Surveying calculations** (adjustments, topology, accuracy)
-- 🔄 **Format conversion** (SOSI ↔ GeoJSON, LAS → SOSI)
-
+-  **Point cloud processing** (LAS/LAZ files)
+-  **FKB GUIDELINES** (Norwegian mapping standards)
+-  **SOSI file generation** (Norwegian GIS format)
+-  **Surveying calculations** (adjustments, topology, accuracy)
+-  **Format conversion** (SOSI ↔ GeoJSON, LAS → SOSI)
+-  **GPU ACCELERATION**
 ---
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Installation
 
@@ -68,7 +68,7 @@ python app.py
 
 ---
 
-## 📦 Features
+##  Features
 
 ### Point Cloud Processing
 
@@ -129,7 +129,7 @@ python app.py
 
 ---
 
-## 🛠️ Available Tools
+## Available Tools
 
 **Total: 39 MCP tools, 15 resources**
 
